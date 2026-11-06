@@ -35,6 +35,19 @@ Start with [the code map](docs/architecture.md) for the files to edit for each f
 Feature components and styles live together. `src/renderer/main.tsx` is the UI entry;
 `src/main/index.ts` starts Electron.
 
+## VS Code
+
+Open the Zeus folder itself in VS Code. The shared `.vscode/settings.json` hides
+`node_modules/`, `out/`, `dist/`, `release/`, TypeScript build cache files, and
+`.DS_Store` from the Explorer. Files stay on disk and remain available to the build
+and terminal. Set a matching `files.exclude` entry to `false` to show it again.
+
+Install **Prettier - Code formatter** (`esbenp.prettier-vscode`), recommended through
+`.vscode/extensions.json`. Save a file with Command+S (Control+S on Windows/Linux)
+to format it using the project's local Prettier dependency, `.prettierrc.json`, and
+`.prettierignore`. These editor settings apply to Zeus; other projects retain their
+own settings. Syntax errors must be fixed before Prettier can format a file.
+
 ## Commands
 
 ```sh
