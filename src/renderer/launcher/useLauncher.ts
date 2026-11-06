@@ -23,6 +23,10 @@ export function useLauncher() {
   const [selected, setSelected] = useState(0);
   const [active, setActive] = useState<LauncherSection | null>(null);
   const [message, setMessage] = useState('');
+  const [launchFailure, setLaunchFailure] = useState<{
+    result: SearchResult;
+    message: string;
+  } | null>(null);
   const [session, setSession] = useState(0);
   const [awake, setAwake] = useState(document.documentElement.dataset.native !== 'true');
   const [pinned, setPinned] = useState(false);
@@ -56,7 +60,7 @@ export function useLauncher() {
     input.current?.focus();
   }, []);
 
-  const { lifecycle, layoutReady } = useLauncherWindow({
+  const { lifecycle, layoutReady, windowError, retryWindow } = useLauncherWindow({
     reset,
     setPinned,
     setSettingsOpen,
@@ -71,6 +75,7 @@ export function useLauncher() {
     pinned,
     settingsOpen,
     toolLayoutVersion,
+    launchError: launchFailure?.message ?? null,
   });
 
   const pin = useCallback(() => {
@@ -104,6 +109,7 @@ export function useLauncher() {
     setQuery('');
     setExpanded(false);
     setMessage('');
+    setLaunchFailure(null);
     setResultIndex(0);
     input.current?.focus();
   }, []);
@@ -112,6 +118,7 @@ export function useLauncher() {
     if (launching) return;
     cancelIdle();
     setLaunching(true);
+    setLaunchFailure(null);
     setMessage('');
     try {
       if (window.zeusLauncher) await window.zeusLauncher.openApplication(application.id);
@@ -126,7 +133,13 @@ export function useLauncher() {
         appWindow.focus();
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Could not open the sample app.');
+      setLaunchFailure({
+        result: { id: `app-${application.id}`, title: application.title, application },
+        message:
+          !window.zeusLauncher && error instanceof Error
+            ? error.message
+            : `Could not open ${application.title}. Please try again.`,
+      });
     } finally {
       setLaunching(false);
     }
@@ -136,6 +149,7 @@ export function useLauncher() {
     if (launching) return;
     cancelIdle();
     setLaunching(true);
+    setLaunchFailure(null);
     setMessage('');
     try {
       if (window.zeusLauncher) await window.zeusLauncher.openTool(tool.id);
@@ -150,7 +164,13 @@ export function useLauncher() {
         toolWindow.focus();
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : 'Could not open the tool.');
+      setLaunchFailure({
+        result: { id: `tool-${tool.id}`, title: tool.title, tool },
+        message:
+          !window.zeusLauncher && error instanceof Error
+            ? error.message
+            : `Could not open ${tool.title}. Please try again.`,
+      });
     } finally {
       setLaunching(false);
     }
@@ -213,6 +233,7 @@ export function useLauncher() {
     idleSuppressed.current = false;
     setExpanded(false);
     setMessage('');
+    setLaunchFailure(null);
     setResultIndex(0);
   }
 
@@ -266,6 +287,11 @@ export function useLauncher() {
     onSearchChange,
     onSearchKeyDown,
     onPickerKeyDown,
+    launchError: launchFailure?.message ?? null,
+    retryLaunch: () => activateResult(launchFailure?.result),
+    dismissLaunchError: () => setLaunchFailure(null),
+    windowError,
+    retryWindow,
   };
 }
 

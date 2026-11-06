@@ -78,7 +78,7 @@ html[data-native='true'][data-pinned='true'] .stage {
   height: 14px;
 }
 .belt-tool.is-open {
-  background: #353535;
+  background: var(--selection);
   color: var(--text);
   border-color: var(--border-strong);
 }
@@ -339,7 +339,7 @@ html[data-native='true'][data-pinned='true'] .stage {
   background: var(--border);
 }
 .calculator-keys .operator-key {
-  background: #343434;
+  background: var(--selection);
   color: var(--text);
 }
 .calculator-keys .equals-key {

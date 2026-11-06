@@ -69,15 +69,18 @@ export function registerIpc(launcher: LauncherWindow): void {
     if (!trusted(event)) throw new Error('Unauthorized application request.');
     // App IDs select fixed local pages; renderer-supplied paths are never used.
     if (id !== 'mock-ai') throw new Error('Unknown application.');
-    launcher.hide();
+    const revision = launcher.getState().revision;
     await openAppWindow('mock-ai');
+    // Keep failures visible and leave a newer launcher session alone.
+    if (launcher.getState().revision === revision) launcher.hide();
   });
 
   ipcMain.handle('zeus:save-image', saveResizedImage);
   ipcMain.handle('zeus:open-tool', async (event, id: unknown) => {
     if (!trusted(event)) throw new Error('Unauthorized tool request.');
     if (id !== 'resize-image') throw new Error('Unknown tool.');
-    launcher.hide();
+    const revision = launcher.getState().revision;
     await openAppWindow('resize-image');
+    if (launcher.getState().revision === revision) launcher.hide();
   });
 }

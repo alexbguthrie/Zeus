@@ -10,6 +10,8 @@
     "vite.renderer.config.ts",
     "src/main/**/*.ts",
     "src/preload/**/*.ts",
-    "src/shared/**/*.ts"
+    "src/shared/**/*.ts",
+    "vitest.config.ts",
+    "tests/main/**/*.ts"
   ]
 }

@@ -26,6 +26,7 @@ Each component should describe a visible part of Zeus. Hooks hold its state and 
 | Native image save dialog            | `src/main/image-save.ts`                         |
 | IPC authorization and validation    | `src/main/ipc.ts`                                |
 | Saved native appearance             | `src/main/preferences.ts`                        |
+| Regression checks                   | `tests/main/` and `tests/renderer/`              |
 
 ## How the pieces connect
 
@@ -51,6 +52,11 @@ and a running timer while switching views.
 Global defaults and theme tokens live in `renderer/styles/`. Feature styles stay
 beside their components. Run `npm run format` after editing; `npm run check` also
 checks formatting.
+
+`vitest.config.ts` runs the native-boundary tests in Node and the React recovery
+tests in JSDOM. `npm run check` includes these tests, so GitHub Actions runs them
+with the production build. Failure-injection tests cover rejected IPC requests,
+stale responses, app launch errors, retries, and keeping pinned notes mounted.
 
 `electron.vite.config.ts` builds Electron and the three CommonJS preloads.
 `vite.renderer.config.ts` supplies the same renderer configuration to Electron and

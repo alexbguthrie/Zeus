@@ -15,11 +15,11 @@ export function loadRenderer(
   return window.loadFile(path.join(import.meta.dirname, '../renderer', page), { query });
 }
 
-export function trayIconPath(): string {
+export function trayIconPath(mainDirectory = import.meta.dirname): string {
   return path.join(
-    import.meta.dirname,
+    mainDirectory,
     !app.isPackaged && process.env.ELECTRON_RENDERER_URL
-      ? '../renderer/assets/trayTemplate.png'
+      ? '../../src/renderer/assets/trayTemplate.png'
       : '../renderer/trayTemplate.png',
   );
 }

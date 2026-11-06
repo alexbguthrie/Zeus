@@ -4,3 +4,5 @@ dist/
 release/
 package-lock.json
 *.tsbuildinfo
+.vitest/
+coverage/

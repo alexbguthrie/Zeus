@@ -4,13 +4,14 @@ import { useAppearance } from '../settings/useAppearance';
 import SearchBar from './SearchBar';
 import SectionPicker from './SectionPicker';
 import SearchResults from './SearchResults';
+import LauncherError from './LauncherError';
 import { useLauncher } from './useLauncher';
 import './launcher.css';
 
 export default function Launcher() {
   const launcher = useLauncher();
   const appearance = useAppearance();
-  const showSearch = !launcher.pinned && !launcher.settingsOpen;
+  const showSearch = !launcher.pinned && !launcher.settingsOpen && !launcher.windowError;
 
   return (
     <div className="preview">
@@ -25,13 +26,23 @@ export default function Launcher() {
       <main className="stage" aria-label="Launcher">
         <div className="launcher-stack" data-layout-ready={launcher.layoutReady}>
           {showSearch && <SearchBar {...launcher} />}
+          {launcher.windowError && (
+            <LauncherError message={launcher.windowError} onRetry={launcher.retryWindow} />
+          )}
+          {showSearch && launcher.launchError && (
+            <LauncherError
+              message={launcher.launchError}
+              onRetry={launcher.retryLaunch}
+              onDismiss={launcher.dismissLaunchError}
+            />
+          )}
           <PinnedWorkspace
-            visible={launcher.pinned && !launcher.settingsOpen}
+            visible={launcher.pinned && !launcher.settingsOpen && !launcher.windowError}
             pending={!!window.zeusLauncher && !launcher.awake}
             onReturn={launcher.returnToLauncher}
             onLayoutChange={launcher.toolsChanged}
           />
-          {launcher.settingsOpen && (
+          {launcher.settingsOpen && !launcher.windowError && (
             <Settings
               preferences={appearance.preferences}
               onChange={(value) => void appearance.setAppearance(value)}
@@ -39,7 +50,7 @@ export default function Launcher() {
               error={appearance.error}
             />
           )}
-          {launcher.pickerMounted && <SectionPicker {...launcher} />}
+          {launcher.pickerMounted && !launcher.windowError && <SectionPicker {...launcher} />}
           {showSearch && (launcher.active || launcher.query) && <SearchResults {...launcher} />}
         </div>
       </main>

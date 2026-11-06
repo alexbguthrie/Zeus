@@ -56,13 +56,18 @@ own settings. Syntax errors must be fixed before Prettier can format a file.
 ```sh
 npm run dev:browser  # Browser preview at http://127.0.0.1:5173
 npm run format       # Apply the project's formatting rules
-npm run check        # Check TypeScript and formatting
+npm test             # Run the automated regression tests
+npm run check        # Check TypeScript, formatting, and regression tests
 npm run build        # Check and compile into out/
 npm start            # Open the compiled app after building
 ```
 
 The Electron dev command reloads native changes and hot-updates React. GitHub Actions
 runs the same build checks. Installer packaging, signing, and auto-updates are not configured.
+
+Regression tests live in `tests/main/` and `tests/renderer/`. They cover tray asset
+paths, app launch failures, and native window recovery, including retry behavior and
+preserving pinned notes. These tests run without opening Electron or touching personal data.
 
 ## Use the launcher
 

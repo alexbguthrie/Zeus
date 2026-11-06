@@ -52,13 +52,15 @@ Use names that describe the job. Keep naming consistent with neighboring files.
 
 ## Check a change before sharing it
 
-Run `npm run check` for TypeScript and formatting. Run `npm run build` when changing
+Run `npm run check` for TypeScript, formatting, and automated regression tests.
+Run `npm test` to run the tests on their own. Run `npm run build` when changing
 imports, entry points, native code, preloads, or build configuration; it includes
 those same checks and compiles all application pages.
 
-Exercise the affected behavior with `npm run dev`. Until repeatable desktop checks
-are added to the repository, describe what you tried and any limitations when
-sharing a change. Generated output belongs in `out/` and stays out of Git.
+Add focused regression tests under `tests/main/` or `tests/renderer/` for behavior
+changes. Exercise affected native window behavior with `npm run dev` too; the unit
+and DOM tests do not replace checking the desktop app. Describe what you tried and
+any limitations when sharing a change. Generated output belongs in `out/` and stays out of Git.
 
 Preserve existing notes and preferences. Changes to storage identifiers need a data
 migration. Native operations must keep their sender checks and fixed application
