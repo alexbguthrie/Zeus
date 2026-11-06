@@ -1,7 +1,11 @@
 import { app, type BrowserWindow } from 'electron';
 import path from 'node:path';
 
-export function loadRenderer(window: BrowserWindow, page: string, query: Record<string, string>): Promise<void> {
+export function loadRenderer(
+  window: BrowserWindow,
+  page: string,
+  query: Record<string, string>,
+): Promise<void> {
   const devUrl = process.env.ELECTRON_RENDERER_URL;
   if (!app.isPackaged && devUrl) {
     const url = new URL(page, `${devUrl.replace(/\/$/, '')}/`);
@@ -12,8 +16,10 @@ export function loadRenderer(window: BrowserWindow, page: string, query: Record<
 }
 
 export function trayIconPath(): string {
-  return path.join(import.meta.dirname,
+  return path.join(
+    import.meta.dirname,
     !app.isPackaged && process.env.ELECTRON_RENDERER_URL
-      ? '../../src/renderer/public/trayTemplate.png'
-      : '../renderer/trayTemplate.png');
+      ? '../renderer/assets/trayTemplate.png'
+      : '../renderer/trayTemplate.png',
+  );
 }

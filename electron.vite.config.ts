@@ -8,9 +8,9 @@ export default defineConfig({
     build: {
       rollupOptions: {
         input: {
-          index: resolve('src/preload/index.ts'),
-          'application-preload': resolve('src/preload/application-preload.ts'),
-          'image-tool-preload': resolve('src/preload/image-tool-preload.ts'),
+          launcher: resolve('src/preload/launcher.ts'),
+          application: resolve('src/preload/application.ts'),
+          'image-tool': resolve('src/preload/image-tool.ts'),
         },
         output: { format: 'cjs', entryFileNames: '[name].cjs' },
       },

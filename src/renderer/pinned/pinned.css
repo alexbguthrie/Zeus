@@ -1,0 +1,378 @@
+/* Pinned workspace shell and tool cards. */
+html[data-pinned='true'] .stage {
+  width: min(520px, 100vw);
+  top: 110px;
+}
+html[data-native='true'][data-pinned='true'] .stage {
+  width: auto;
+}
+.pinned-workspace {
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 12px 36px var(--shadow);
+  overflow: hidden;
+}
+.belt-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 32px;
+  padding: 0 12px 0 15px;
+}
+.belt-heading {
+  flex: 1;
+}
+.belt-heading strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+.belt-running {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.belt-return {
+  display: grid;
+  place-items: center;
+  border-radius: 5px;
+  width: 22px;
+  height: 22px;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+.belt-return:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+.belt-dock {
+  display: flex;
+  gap: 4px;
+  padding: 0 8px 6px;
+}
+.belt-tool {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  height: 28px;
+  padding: 0 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.belt-orb {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+.belt-orb svg {
+  width: 14px;
+  height: 14px;
+}
+.belt-tool.is-open {
+  background: #353535;
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+.belt-tool:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+.belt-tool:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--subtle);
+  background: var(--hover);
+  color: var(--text);
+}
+.orb-dot {
+  position: absolute;
+  right: -3px;
+  top: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text);
+}
+.belt-tool-name {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+.belt-tool-name kbd {
+  color: var(--subtle);
+  font-size: 9px;
+  opacity: 0;
+}
+.belt-tool:hover kbd,
+.belt-tool:focus-visible kbd {
+  opacity: 1;
+}
+.belt-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.belt-cards.single-card {
+  grid-template-columns: minmax(0, 1fr);
+}
+.tool-card {
+  min-width: 0;
+  height: 272px;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+}
+.tool-card + .tool-card {
+  border-left: 1px solid var(--border);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 6px;
+}
+.card-header > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+.card-header svg {
+  display: none;
+}
+.card-header button {
+  width: 21px;
+  height: 21px;
+  border: none;
+  background: transparent;
+  border-radius: 5px;
+  color: var(--subtle);
+  font-size: 17px;
+  line-height: 1;
+}
+.card-header button:hover {
+  background: var(--border);
+  color: var(--accent);
+}
+.note-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+.note-body textarea {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  resize: none;
+  border: none;
+  padding: 5px 16px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.8;
+  outline: none;
+  color: var(--text);
+  background: transparent;
+}
+.note-body textarea:focus-visible {
+  box-shadow: inset 2px 0 var(--subtle);
+}
+.note-body textarea::placeholder {
+  color: var(--subtle);
+}
+.note-body footer {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 12px 14px;
+  color: var(--subtle);
+  font-size: 9px;
+}
+.timer-body {
+  flex: 1;
+  min-height: 0;
+  padding: 5px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 64px;
+}
+.timer-dial output {
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.timer-dial span {
+  font-size: 10px;
+  color: var(--subtle);
+}
+.timer-progress {
+  width: 100%;
+  max-width: 170px;
+  height: 2px;
+  background: var(--border-strong);
+  margin: 12px 0 18px;
+  overflow: hidden;
+  border-radius: 1px;
+}
+.timer-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 250ms linear;
+}
+.timer-presets {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.timer-presets button {
+  padding: 5px 8px;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: var(--muted);
+}
+.timer-presets button[aria-pressed='true'] {
+  color: var(--text);
+  background: var(--hover);
+  border-color: var(--border-strong);
+}
+.timer-presets button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.timer-controls {
+  display: flex;
+  gap: 8px;
+}
+.primary-control {
+  min-width: 96px;
+  padding: 8px 15px;
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+}
+.reset-timer {
+  width: 31px;
+  background: var(--hover);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  font-size: 18px;
+  color: var(--muted);
+}
+.calculator-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-height: 0;
+  padding: 0 12px 12px;
+}
+.calculator-body > input {
+  width: 100%;
+  background: var(--field);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--muted);
+  padding: 6px 8px;
+  text-align: right;
+  font-size: 11px;
+}
+.calculation-result {
+  min-height: 29px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  padding: 0 3px;
+  font-size: 25px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+.calculation-error {
+  min-height: 29px;
+  font-size: 10px;
+  color: var(--error);
+  text-align: right;
+}
+.calculator-keys {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  flex: 1;
+  min-height: 0;
+}
+.calculator-keys button {
+  min-height: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--raised);
+  color: var(--accent);
+  font-size: 12px;
+}
+.calculator-keys button:hover {
+  background: var(--border);
+}
+.calculator-keys .operator-key {
+  background: #343434;
+  color: var(--text);
+}
+.calculator-keys .equals-key {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--surface);
+}
+[data-native='true'] [data-layout-ready='false'] .belt-cards {
+  visibility: hidden;
+}
+@media (max-width: 440px) {
+  .belt-tool {
+    padding: 0 4px;
+    gap: 4px;
+  }
+  .belt-tool-name {
+    font-size: 11px;
+  }
+  .belt-tool-name kbd {
+    display: none;
+  }
+  .belt-cards {
+    grid-template-columns: minmax(0, 1fr);
+    max-height: 48vh;
+    overflow-y: auto;
+  }
+  .tool-card + .tool-card {
+    border-left: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pinned-workspace * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

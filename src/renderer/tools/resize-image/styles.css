@@ -1,0 +1,345 @@
+@import '../../styles/theme.css';
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--surface);
+  color: var(--text);
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button,
+select {
+  cursor: pointer;
+}
+button {
+  color: inherit;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--muted);
+  outline-offset: 3px;
+}
+.resize-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  -webkit-app-region: drag;
+}
+.resize-header span span,
+.local-label {
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+[data-native='true'] .resize-header {
+  padding-left: 88px;
+}
+main {
+  max-width: 1060px;
+  margin: auto;
+  padding: 32px;
+}
+.resize-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+h1 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: -0.7px;
+  font-weight: 550;
+}
+.resize-title p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 8px 0 0;
+}
+.quiet {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  font-size: 12px;
+}
+.quiet:hover {
+  background: var(--hover);
+}
+.file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 340px;
+  background: var(--raised);
+  border: 1px dashed var(--border-strong);
+  border-radius: 16px;
+}
+.drop-zone strong {
+  font-size: 16px;
+  font-weight: 500;
+}
+.drop-zone span:not(.upload-icon),
+.drop-zone small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.drop-zone small {
+  margin-top: 20px;
+  font-size: 11px;
+}
+.upload-icon {
+  font-size: 32px;
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+.dragging {
+  border-color: var(--text);
+  background: var(--hover);
+}
+.resize-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 28px;
+}
+.image-preview {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  align-self: start;
+}
+.preview-canvas {
+  height: 330px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--raised);
+  background-image: repeating-conic-gradient(var(--border) 0% 25%, transparent 0% 50%);
+  background-size: 16px 16px;
+}
+.preview-canvas img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 2px 14px var(--shadow);
+}
+.preview-canvas > span {
+  background: var(--surface);
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.image-preview footer {
+  padding: 13px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+}
+.image-preview footer span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.image-preview footer span:last-child {
+  color: var(--muted);
+  font-size: 11px;
+}
+.control-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+h2 {
+  font-size: 13px;
+  margin: 0;
+  font-weight: 550;
+}
+.control-heading span {
+  font-size: 11px;
+  color: var(--muted);
+}
+.dimension-fields {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.dimension-fields label {
+  min-width: 0;
+  flex: 1;
+  font-size: 11px;
+  color: var(--muted);
+}
+.dimension-fields > span {
+  color: var(--subtle);
+  padding-top: 18px;
+}
+input[type='number'],
+select {
+  width: 100%;
+  height: 36px;
+  border: 1px solid var(--border);
+  background: var(--field);
+  color: var(--text);
+  border-radius: 7px;
+  padding: 0 10px;
+}
+.dimension-fields input {
+  margin-top: 7px;
+}
+.ratio-lock {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  margin: 13px 0;
+}
+input[type='checkbox'],
+input[type='range'] {
+  accent-color: var(--text);
+}
+.presets {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 25px;
+}
+.presets button {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px;
+  font-size: 11px;
+}
+.presets button:hover {
+  background: var(--hover);
+}
+.format-label {
+  display: block;
+  font-size: 12px;
+}
+.format-label select {
+  margin-top: 9px;
+}
+.quality-label {
+  display: block;
+  font-size: 12px;
+  margin-top: 18px;
+}
+.quality-label span {
+  float: right;
+  color: var(--muted);
+}
+.quality-label input {
+  width: 100%;
+  margin: 12px 0 0;
+}
+.format-note,
+.original-note {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.export-summary {
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 24px;
+  padding-top: 18px;
+  font-size: 12px;
+}
+.save-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 500;
+}
+.original-note {
+  text-align: center;
+}
+.resize-error,
+.field-error {
+  color: var(--error);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.save-status {
+  font-size: 12px;
+  color: var(--muted);
+  min-height: 16px;
+}
+.drop-overlay {
+  position: fixed;
+  inset: 68px 8px 8px;
+  border-radius: 16px;
+  background: var(--surface);
+  border: 2px dashed var(--border-strong);
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0.95;
+}
+@media (max-width: 650px) {
+  main {
+    padding: 24px 18px;
+  }
+  .resize-header {
+    padding-right: 18px;
+  }
+  .local-label {
+    display: none;
+  }
+  .resize-workspace {
+    grid-template-columns: 1fr;
+  }
+  .preview-canvas {
+    height: 220px;
+  }
+  .resize-controls {
+    max-width: 400px;
+    width: 100%;
+    margin: auto;
+  }
+}

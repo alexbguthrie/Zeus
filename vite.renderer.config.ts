@@ -9,7 +9,8 @@ export function rendererPlugins(): PluginOption[] {
       name: 'zeus-development-csp',
       apply: 'serve',
       // React Fast Refresh injects an inline preamble during development.
-      transformIndexHtml: (html) => html.replace("script-src 'self'", "script-src 'self' 'unsafe-inline'"),
+      transformIndexHtml: (html) =>
+        html.replace("script-src 'self'", "script-src 'self' 'unsafe-inline'"),
     },
   ];
 }
@@ -17,13 +18,14 @@ export function rendererPlugins(): PluginOption[] {
 export const rendererConfig = defineConfig({
   root: 'src/renderer',
   base: './',
+  publicDir: 'assets',
   plugins: rendererPlugins(),
   build: {
     rollupOptions: {
       input: {
         launcher: resolve('src/renderer/index.html'),
         mockAI: resolve('src/renderer/applications/mock-ai/index.html'),
-        resizeImage: resolve('src/renderer/tools/main/resize-image/index.html'),
+        resizeImage: resolve('src/renderer/tools/resize-image/index.html'),
       },
     },
   },

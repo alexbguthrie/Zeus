@@ -1,62 +1,67 @@
 # Zeus
 
-Desktop app built with Electron, React, TypeScript, and Vite via electron-vite.
+A desktop launcher built with Electron, React, TypeScript, and Vite.
 
-## Development
+## Run
 
-Use Node.js 26 (`nvm use` if you use nvm), then:
+Use Node.js 26 (`nvm use`), then:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-The dev command starts Electron and Vite, with hot updates for React and reloads for main/preload changes.
+Zeus starts hidden in the menu bar. Press **Command+/** (Control+/ on Windows/Linux)
+or choose **Show Zeus** from the tray. Quit older Zeus instances if they hold the shortcut.
 
-```sh
-npm run dev:browser # Renderer preview without Electron
-npm run check       # TypeScript checks for all processes and configs
-npm run build       # Type-check and compile into out/
-npm start           # Open the compiled desktop app after building
+## Find your way around
+
+```text
+src/
+  main/          Native windows, tray, IPC, and preferences
+  preload/       Narrow bridges between native code and the UI
+  shared/        Launcher, appearance, and image-save types
+  renderer/
+    launcher/    Search bar, section picker, results, and keyboard behavior
+    pinned/      Pinned workspace with notes/, timer/, and calculator/
+    settings/    Appearance settings and theme preferences
+    applications/  Zeus AI sample app
+    tools/       Resize Image and the tool registry
+    styles/      Global base styles and theme tokens
+    assets/      Tray artwork
 ```
 
-`npm run build` produces application files; installer packaging, signing, and auto-updates are not configured yet.
+Start with [the code map](docs/architecture.md) for the files to edit for each feature.
+Feature components and styles live together. `src/renderer/main.tsx` is the UI entry;
+`src/main/index.ts` starts Electron.
 
-## Structure
+## Commands
 
-- `src/main/`: Electron app lifecycle and native windows.
-- `src/preload/`: Sandboxed launcher, appearance, and image-save bridges.
-- `src/renderer/src/`: Restored launcher, settings, and appearance handling.
-- `src/renderer/tools/`: Pinned Notes, Timer, Calculator, and the Resize Image window.
-- `src/renderer/applications/`: Zeus AI sample app.
-- `src/shared/`: Typed lifecycle and preload contracts.
-- `src/renderer/styles/`: Existing Zeus styles and light/dark theme tokens.
-- `docs/`: Project notes.
-- `scripts/`: Project scripts.
+```sh
+npm run dev:browser  # Browser preview at http://127.0.0.1:5173
+npm run format       # Apply the project's formatting rules
+npm run check        # Check TypeScript and formatting
+npm run build        # Check and compile into out/
+npm start            # Open the compiled app after building
+```
 
-The renderer has context isolation and sandboxing enabled, with Node.js access disabled. Add narrowly scoped preload methods when native functionality is needed.
+The Electron dev command reloads native changes and hot-updates React. GitHub Actions
+runs the same build checks. Installer packaging, signing, and auto-updates are not configured.
 
-## Launcher
+## Use the launcher
 
-The native app starts hidden and adds a Zeus tray/menu bar icon. Press **Command+/ (Control+/ on Windows/Linux)** or choose **Show Zeus** from the tray. Quit older Zeus versions if they are holding that shortcut.
-
-- Pause with an empty search or press Down to explore Apps, Tools, Files, Actions, and Clipboard.
+- Pause with an empty search, or press Down, to explore sections.
 - Use Left/Right and Enter, or Command/Control+1–5, to open sections.
-- Search **Zeus AI** or **Resize Image** and press Enter to open their windows.
-- Press Up from empty search to pin the Notes, Timer, and Calculator hub.
-- Escape backs out and then hides the launcher; the unpinned launcher also hides on blur.
+- Search **Zeus AI** or **Resize Image** to open their windows.
+- Press Up from an empty search to pin Notes, Timer, and Calculator.
+- Escape backs out and then hides the launcher. The unpinned launcher hides on blur.
 - Open **Settings…** from the tray for Light, Dark, and System appearance.
+- Browser settings are available at `/?view=settings`.
 
-The browser preview opens the launcher directly. Visit `/?view=settings` for browser appearance settings. Native notes and preferences retain the backup's `Zeus Toolbelt Beta` storage directory and existing local-storage keys. Passing Electron's `--user-data-dir` switch allows an isolated profile.
+Files, Actions, and Clipboard contain sample data. Zeus AI uses local mock replies.
+The timer continues while tucked away or hidden, but resets when the app quits and has no alarm.
 
-Files, Actions, and Clipboard retain the backup's sample data. Zeus AI is a local mock chat, with no API connection. The Chrome extension prototype is outside this launcher migration.
-
-## Appearance
-
-`styles.css` and `theme.css` were copied unchanged from `/Users/abg/Backups/Zeus/Zeus-v0.03/beta/src/renderer/`. This is the backup containing the launcher in `Launcher.tsx`; the top-level `src/renderer/` contains an older initial interface. The restored launcher uses their existing classes. Light, dark, and system modes are supported, with the previous preference key retained. The launcher UI, native hidden/launcher/pinned/settings lifecycle, tray, preloads, pinned tools, and its Zeus AI and Resize Image windows are restored from the same backup.
-
-## GitHub
+The launcher came from `/Users/abg/Backups/Zeus/Zeus-v0.03/beta/`. Its existing storage
+identifiers remain intact so saved notes and preferences survive the reorganization.
 
 Repository: [alexbguthrie/Zeus](https://github.com/alexbguthrie/Zeus).
-
-GitHub Actions installs locked dependencies and runs the production build on pushes to `main` and pull requests.

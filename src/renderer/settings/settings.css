@@ -1,0 +1,108 @@
+.settings-panel {
+  padding: 20px 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  color: var(--text);
+  box-shadow: 0 12px 35px var(--shadow);
+}
+.settings-panel > header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.settings-panel > header h1 {
+  flex: 1;
+  font-size: 16px;
+}
+.settings-panel > header kbd {
+  font-size: 11px;
+  color: var(--subtle);
+}
+.settings-panel fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.settings-panel legend {
+  font-size: 13px;
+  font-weight: 500;
+}
+.settings-panel fieldset > p {
+  margin: 7px 0 16px;
+  color: var(--muted);
+  font-size: 11px;
+}
+.appearance-options {
+  display: flex;
+  gap: 12px;
+}
+.appearance-options label {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.appearance-options label.is-selected {
+  border-color: var(--muted);
+  background: var(--selection);
+}
+.appearance-options input {
+  margin: 0;
+  accent-color: var(--accent);
+}
+.appearance-swatch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 32px;
+  height: 26px;
+  padding: 6px;
+  border: 1px solid #888;
+  border-radius: 4px;
+  background: #fafafa;
+}
+.appearance-swatch > span {
+  height: 2px;
+  background: #b6b6b6;
+  border-radius: 1px;
+}
+.appearance-swatch > span:last-child {
+  width: 65%;
+}
+.swatch-dark {
+  background: var(--raised);
+}
+.swatch-dark > span {
+  background: #777;
+}
+.swatch-system {
+  background: linear-gradient(90deg, #fafafa 50%, #252525 50%);
+}
+.settings-status {
+  min-height: 14px;
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+@media (max-width: 480px) {
+  .appearance-options {
+    gap: 6px;
+  }
+  .appearance-options label {
+    padding: 10px 6px;
+    gap: 5px;
+  }
+  .appearance-swatch {
+    display: none;
+  }
+}

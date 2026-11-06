@@ -17,8 +17,10 @@
     "dev:browser": "vite --config vite.renderer.config.ts --host 127.0.0.1",
     "start": "electron-vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.renderer.json",
-    "check": "npm run typecheck",
-    "build": "npm run check && electron-vite build"
+    "check": "npm run typecheck && npm run format:check",
+    "build": "npm run check && electron-vite build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -31,6 +33,7 @@
     "@vitejs/plugin-react": "^6.2.1",
     "electron": "45.2.1",
     "electron-vite": "^6.0.0",
+    "prettier": "^3.9.10",
     "typescript": "^7.0.2",
     "vite": "^8.3.6"
   }
