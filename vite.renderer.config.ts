@@ -1,5 +1,6 @@
 import { defineConfig, type PluginOption } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'node:path';
 
 export function rendererPlugins(): PluginOption[] {
   return [
@@ -13,7 +14,19 @@ export function rendererPlugins(): PluginOption[] {
   ];
 }
 
-export default defineConfig({
+export const rendererConfig = defineConfig({
   root: 'src/renderer',
+  base: './',
   plugins: rendererPlugins(),
+  build: {
+    rollupOptions: {
+      input: {
+        launcher: resolve('src/renderer/index.html'),
+        mockAI: resolve('src/renderer/applications/mock-ai/index.html'),
+        resizeImage: resolve('src/renderer/tools/main/resize-image/index.html'),
+      },
+    },
+  },
 });
+
+export default rendererConfig;
