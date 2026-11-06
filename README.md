@@ -35,6 +35,9 @@ Start with [the code map](docs/architecture.md) for the files to edit for each f
 Feature components and styles live together. `src/renderer/main.tsx` is the UI entry;
 `src/main/index.ts` starts Electron.
 
+See [Working on Zeus](CONTRIBUTING.md) for naming, types, feature organization,
+styles, and the checks to run before sharing a change.
+
 ## VS Code
 
 Open the Zeus folder itself in VS Code. The shared `.vscode/settings.json` hides
