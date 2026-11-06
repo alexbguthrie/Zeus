@@ -1,0 +1,37 @@
+{
+  "name": "zeus",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Zeus desktop app built with Electron, React, TypeScript, and Vite.",
+  "type": "module",
+  "main": "./out/main/index.js",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexbguthrie/Zeus.git"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "dev:browser": "vite --config vite.renderer.config.ts --host 127.0.0.1",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.renderer.json",
+    "check": "npm run typecheck",
+    "build": "npm run check && electron-vite build"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "electron": "^45.2.3",
+    "electron-vite": "^6.0.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6"
+  }
+}
