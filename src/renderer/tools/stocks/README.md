@@ -9,6 +9,11 @@ adapts the view to the generic pinned presentation contract. The app window and
 pinned view share a watchlist through localStorage. Preview scopes use separate
 storage. Selecting a ticker is local to each view.
 
+The standalone dashboard adds `StockDetail`: a selected-stock chart with pointer
+inspection and daily price statistics. Chart prices are derived from the same
+fictional fixtures, ending at the displayed quote. This view stays inside the
+example folder and adds no chart library or shared launcher logic.
+
 ## Removing the example
 
 Delete this folder and `tests/renderer/stocks.test.tsx`, then remove the Stocks
