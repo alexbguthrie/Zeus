@@ -76,7 +76,9 @@ export default function SearchResults({
                 </span>
                 <span className="application-info">
                   <strong>{result.title}</strong>
-                  <span>{(result.application ?? result.tool)?.description}</span>
+                  <span>
+                    {result.description ?? (result.application ?? result.tool)?.description}
+                  </span>
                 </span>
                 <span className="application-open">{launching ? 'Opening…' : 'Open ↗'}</span>
               </>

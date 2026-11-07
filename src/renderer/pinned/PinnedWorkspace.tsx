@@ -36,6 +36,12 @@ export default function PinnedWorkspace({
 }: Props) {
   const [open, setOpen] = useState<PinnedToolId[]>(initialTool ? [initialTool] : []);
   const [statuses, setStatuses] = useState<Partial<Record<PinnedToolId, string | null>>>({});
+  const [toolHeights, setToolHeights] = useState<Partial<Record<PinnedToolId, number>>>({});
+  const onSizeChange = useCallback((tool: PinnedToolId, height?: number) => {
+    setToolHeights((current) =>
+      current[tool] === height ? current : { ...current, [tool]: height },
+    );
+  }, []);
   const dockButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const id = useId();
   const layout = pinnedLayouts[variant];
@@ -63,7 +69,7 @@ export default function PinnedWorkspace({
 
   useLayoutEffect(() => {
     onLayoutChange(width);
-  }, [open, visible, onLayoutChange, width, variant]);
+  }, [open, visible, onLayoutChange, width, variant, toolHeights]);
   useEffect(() => {
     if (visible && !pending && !previewScope) dockButtons.current[0]?.focus();
   }, [visible, pending, previewScope]);
@@ -166,7 +172,12 @@ export default function PinnedWorkspace({
               id={`${id}-tool-${tool.id}`}
               key={tool.id}
               hidden={index < 0}
-              style={{ order: index }}
+              style={
+                {
+                  order: index,
+                  '--tool-height': toolHeights[tool.id] ? `${toolHeights[tool.id]}px` : undefined,
+                } as CSSProperties
+              }
               data-first={index === 0}
               aria-label={`${tool.title} card`}
             >
@@ -182,6 +193,7 @@ export default function PinnedWorkspace({
               <View
                 storageScope={previewScope}
                 onStatusChange={onStatusChange}
+                onSizeChange={onSizeChange}
                 presentation={resolveToolPresentation(definition, layout.presentation)}
               />
             </article>

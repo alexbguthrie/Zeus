@@ -1,3 +1,4 @@
+import { applicationSearchProviders } from '../applications/search-entries';
 import { applications, type SampleApplication } from '../applications/registry';
 import { launcherTools, type LauncherTool } from '../tools/registry';
 import { launcherSections, type LauncherSection } from './sections';
@@ -5,6 +6,8 @@ import { launcherSections, type LauncherSection } from './sections';
 export type SearchResult = {
   id: string;
   title: string;
+  description?: string;
+  prepareOpen?(): void;
   application?: SampleApplication;
   tool?: LauncherTool;
   section?: LauncherSection;
@@ -13,6 +16,7 @@ export type SearchResult = {
 
 export function findResults(query: string, active: LauncherSection | null): SearchResult[] {
   const search = query.trim().toLowerCase();
+  const entries = applicationSearchProviders.flatMap((provider) => provider(query));
   const appResults: SearchResult[] =
     active?.id === 'apps' || (!active && search)
       ? applications
@@ -35,7 +39,7 @@ export function findResults(query: string, active: LauncherSection | null): Sear
           )
           .map((tool) => ({ id: `tool-${tool.id}`, title: tool.title, tool }))
       : [];
-  if (active?.id === 'apps') return appResults;
+  if (active?.id === 'apps') return [...entries, ...appResults];
   if (active?.id === 'tools') return toolResults;
   if (active)
     return active.items
@@ -43,6 +47,7 @@ export function findResults(query: string, active: LauncherSection | null): Sear
       .map((sample, index) => ({ id: `sample-${active.id}-${index}`, title: sample, sample }));
   if (!search) return [];
   return [
+    ...entries,
     ...appResults,
     ...toolResults,
     ...launcherSections

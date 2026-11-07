@@ -9,6 +9,7 @@ import CalculatorTool from './calculator/CalculatorTool';
 export type EmbeddedToolProps = {
   storageScope?: string;
   presentation: ToolPresentation;
+  onSizeChange?(id: PinnedToolId, height?: number): void;
   onStatusChange(id: PinnedToolId, status: string | null): void;
 };
 

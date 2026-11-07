@@ -49,7 +49,7 @@
   display: none;
 }
 .pinned-workspace[data-variant] .tool-card {
-  height: 190px;
+  height: var(--tool-height, 190px);
   border-left: 0;
 }
 .pinned-workspace[data-variant='rail'] {
@@ -95,5 +95,5 @@
   padding-bottom: 4px;
 }
 .pinned-workspace[data-presentation='inline'] .tool-card {
-  height: 56px;
+  height: var(--tool-height, 56px);
 }

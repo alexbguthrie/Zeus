@@ -120,18 +120,19 @@ export function useLauncher() {
     input.current?.focus();
   }, []);
 
-  async function launchApplication(application: SampleApplication) {
+  async function launchApplication(application: SampleApplication, result?: SearchResult) {
     if (launching) return;
     cancelIdle();
     setLaunching(true);
     setLaunchFailure(null);
     setMessage('');
     try {
+      result?.prepareOpen?.();
       if (window.zeusLauncher) await window.zeusLauncher.openApplication(application.id);
       else {
         const appWindow = window.open(
           new URL(application.page, document.baseURI).href,
-          'zeus-mock-ai',
+          `zeus-app-${application.id}`,
           'popup,width=1120,height=780',
         );
         if (!appWindow) throw new Error('Allow the preview to open a window, then try again.');
@@ -140,7 +141,7 @@ export function useLauncher() {
       }
     } catch (error) {
       setLaunchFailure({
-        result: { id: `app-${application.id}`, title: application.title, application },
+        result: result ?? { id: `app-${application.id}`, title: application.title, application },
         message:
           !window.zeusLauncher && error instanceof Error
             ? error.message
@@ -184,7 +185,7 @@ export function useLauncher() {
 
   function activateResult(result: SearchResult | undefined) {
     if (!result) return;
-    if (result.application) void launchApplication(result.application);
+    if (result.application) void launchApplication(result.application, result);
     else if (result.tool) void launchTool(result.tool);
     else if (result.section) openSection(result.section);
     else setMessage(`${result.title} selected. This is a preview; no desktop action was run.`);

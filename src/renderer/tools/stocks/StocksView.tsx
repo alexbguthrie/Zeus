@@ -1,7 +1,13 @@
-import { formatChange, formatPrice, type StockSymbol } from './demo-quotes';
+import StockPicker from './StockPicker';
+import { formatChange, formatPrice, isStockSymbol, type StockSymbol } from './demo-quotes';
 import type { useWatchlist } from './useWatchlist';
 
-type Props = { watchlist: ReturnType<typeof useWatchlist>; inline?: boolean };
+type Props = {
+  watchlist: ReturnType<typeof useWatchlist>;
+  inline?: boolean;
+  manage?: boolean;
+  onInspect?(): void;
+};
 
 function AddStock({ watchlist }: Pick<Props, 'watchlist'>) {
   return (
@@ -46,7 +52,12 @@ function Sparkline({ values }: { values: readonly number[] }) {
   );
 }
 
-export default function StocksView({ watchlist, inline = false }: Props) {
+export default function StocksView({
+  watchlist,
+  inline = false,
+  manage = false,
+  onInspect,
+}: Props) {
   if (inline)
     return (
       <div className="stocks-inline">
@@ -63,7 +74,17 @@ export default function StocksView({ watchlist, inline = false }: Props) {
                 </option>
               ))}
             </select>
-            <strong>{formatPrice(watchlist.active.price)}</strong>
+            {onInspect ? (
+              <button
+                className="stocks-inline-price"
+                onClick={onInspect}
+                aria-label={`Peek ${watchlist.active.symbol}`}
+              >
+                <strong>{formatPrice(watchlist.active.price)}</strong>
+              </button>
+            ) : (
+              <strong>{formatPrice(watchlist.active.price)}</strong>
+            )}
             <span className={`stocks-change ${watchlist.active.change >= 0 ? 'is-up' : 'is-down'}`}>
               {formatChange(watchlist.active.change)}
             </span>
@@ -86,18 +107,42 @@ export default function StocksView({ watchlist, inline = false }: Props) {
     <div className="stocks-watchlist">
       <header className="stocks-toolbar">
         <span className="stocks-demo">Demo · USD · Not live</span>
-        <AddStock watchlist={watchlist} />
+        {manage ? <StockPicker watchlist={watchlist} /> : <AddStock watchlist={watchlist} />}
       </header>
       <ul aria-label="Stock watchlist">
         {watchlist.quotes.map((quote) => (
           <li
             key={quote.symbol}
+            draggable={manage}
+            onDragStart={(event) => event.dataTransfer.setData('text/plain', quote.symbol)}
+            onDragOver={(event) => {
+              if (manage) event.preventDefault();
+            }}
+            onDrop={(event) => {
+              event.preventDefault();
+              const symbol = event.dataTransfer.getData('text/plain');
+              if (manage && isStockSymbol(symbol)) watchlist.move(symbol, quote.symbol);
+            }}
+            onKeyDown={(event) => {
+              if (!manage || !event.altKey || !['ArrowUp', 'ArrowDown'].includes(event.key)) return;
+              event.preventDefault();
+              const index = watchlist.quotes.findIndex((item) => item.symbol === quote.symbol);
+              const target = watchlist.quotes[index + (event.key === 'ArrowUp' ? -1 : 1)];
+              if (target) {
+                if (event.key === 'ArrowDown') watchlist.move(target.symbol, quote.symbol);
+                else watchlist.move(quote.symbol, target.symbol);
+              }
+            }}
             className={quote.symbol === watchlist.active?.symbol ? 'is-selected' : ''}
           >
             <button
               className="stocks-quote"
-              onClick={() => watchlist.select(quote.symbol)}
+              onClick={() => {
+                watchlist.select(quote.symbol);
+                onInspect?.();
+              }}
               aria-label={`View ${quote.symbol}`}
+              title={manage ? 'Drag to reorder · Alt + ↑ / ↓ to move' : undefined}
               aria-pressed={quote.symbol === watchlist.active?.symbol}
             >
               <span className="stocks-company">

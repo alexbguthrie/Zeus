@@ -183,8 +183,6 @@ html[data-native='true'][data-pinned='true'] .stage {
   }
   .belt-cards {
     grid-template-columns: minmax(0, 1fr);
-    max-height: 48vh;
-    overflow-y: auto;
   }
   .tool-card[data-first='false'] {
     border-left: 0;
