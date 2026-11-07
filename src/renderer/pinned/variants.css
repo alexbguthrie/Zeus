@@ -44,6 +44,7 @@
   display: block;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
 }
 .pinned-workspace[data-variant][data-open='false'] .belt-cards {
   display: none;
@@ -54,7 +55,7 @@
 }
 .pinned-workspace[data-variant='rail'] {
   display: grid;
-  grid-template-columns: 40px auto;
+  grid-template-columns: 40px minmax(0, 1fr);
 }
 .pinned-workspace[data-variant='rail'][hidden] {
   display: none;

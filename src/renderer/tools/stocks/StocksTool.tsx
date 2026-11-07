@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { EmbeddedToolProps } from '../embedded';
 import ToolSurface from '../ToolSurface';
 import StocksView from './StocksView';
@@ -15,8 +15,8 @@ export default function StocksTool({
   const watchlist = useWatchlist(storageScope);
   const [peek, setPeek] = useState(false);
   const [error, setError] = useState('');
-  useEffect(() => {
-    onSizeChange?.('stocks', peek ? 380 : undefined);
+  useLayoutEffect(() => {
+    onSizeChange?.('stocks', peek ? 420 : undefined);
     return () => onSizeChange?.('stocks', undefined);
   }, [peek, onSizeChange]);
   const pinned =

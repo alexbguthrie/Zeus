@@ -128,7 +128,7 @@ it('expands quick peek and restores compact tool height on return', () => {
     <StocksTool presentation="inline" onStatusChange={() => {}} onSizeChange={onSizeChange} />,
   );
   fireEvent.click(screen.getByRole('button', { name: 'Quick peek' }));
-  expect(onSizeChange).toHaveBeenLastCalledWith('stocks', 380);
+  expect(onSizeChange).toHaveBeenLastCalledWith('stocks', 420);
   expect(screen.getByRole('slider', { name: 'Chart price point' })).toBeTruthy();
   fireEvent.click(screen.getByRole('button', { name: '← Watchlist' }));
   expect(onSizeChange).toHaveBeenLastCalledWith('stocks', undefined);
