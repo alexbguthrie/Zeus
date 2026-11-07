@@ -14,7 +14,11 @@ vi.mock('../../src/main/app-windows', () => ({
   isAppWindowSender: vi.fn(() => false),
 }));
 vi.mock('../../src/main/image-save', () => ({ saveResizedImage: vi.fn() }));
-vi.mock('../../src/main/preferences', () => ({ getPreferences: vi.fn(), setAppearance: vi.fn() }));
+vi.mock('../../src/main/preferences', () => ({
+  getPreferences: vi.fn(),
+  setAppearance: vi.fn(),
+  setPinnedLayout: vi.fn(),
+}));
 
 function setup(channel: string) {
   const frame = {};

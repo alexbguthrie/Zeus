@@ -1,17 +1,17 @@
+import { pinnedLayouts, type PinnedLayout } from '../../shared/pinned';
 import './settings.css';
-import type { Appearance, Preferences } from '../../shared/appearance';
+import type { Appearance } from '../../shared/appearance';
+import type { Preferences } from '../../shared/preferences';
 
-export default function Settings({
-  preferences,
-  onChange,
-  onBack,
-  error,
-}: {
+type Props = {
   preferences: Preferences;
   onChange(appearance: Appearance): void;
+  onLayoutChange(layout: PinnedLayout): void;
   onBack(): void;
   error: string;
-}) {
+};
+
+export default function Settings({ preferences, onChange, onLayoutChange, onBack, error }: Props) {
   return (
     <section className="settings-panel" aria-label="Settings">
       <header>
@@ -48,8 +48,28 @@ export default function Settings({
           ))}
         </div>
       </fieldset>
+      <fieldset className="pinned-layout-options">
+        <legend>Pinned layout</legend>
+        <p>Choose how your pinned tools fit on screen.</p>
+        <div className="layout-options">
+          {(Object.keys(pinnedLayouts) as PinnedLayout[]).map((id) => (
+            <label key={id} className={preferences.pinnedLayout === id ? 'is-selected' : ''}>
+              <input
+                type="radio"
+                name="pinned-layout"
+                checked={preferences.pinnedLayout === id}
+                onChange={() => onLayoutChange(id)}
+              />
+              <span>
+                <strong>{pinnedLayouts[id].title}</strong>
+                <small>{pinnedLayouts[id].description}</small>
+              </span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
       <p className="settings-status" role="status">
-        {error || 'Applies to the launcher, pinned hub, and sample apps.'}
+        {error || 'Preferences are saved on this device.'}
       </p>
     </section>
   );

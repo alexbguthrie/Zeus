@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { AppearanceBridge, Preferences } from '../shared/appearance';
+import type { AppearanceBridge } from '../shared/appearance';
+import type { Preferences } from '../shared/preferences';
 import type { ImageToolBridge } from '../shared/image-tool';
 
 // Image tools observe appearance and can request a Save dialog for a new image copy.

@@ -50,3 +50,18 @@ it('switches compact tools without discarding a tucked-away calculation', () => 
   expect(screen.getByLabelText('Calculation result').textContent).toBe('72');
   expect(screen.getByText('1 of 1 tools open')).toBeTruthy();
 });
+
+it('retains tool state when the user changes layout', () => {
+  const view = render(<PinnedWorkspace {...defaults} variant="dock" initialTool="calculator" />);
+  const field = screen.getByRole('textbox', { name: 'Calculation' });
+  fireEvent.change(field, { target: { value: '6 * 7' } });
+  fireEvent.submit(field.closest('form')!);
+  view.rerender(<PinnedWorkspace {...defaults} variant="strip" initialTool="calculator" />);
+  expect(screen.getByLabelText('Calculation result').textContent).toBe('42');
+  expect(document.querySelector('.pinned-workspace')?.getAttribute('data-variant')).toBe('strip');
+});
+
+it('uses a supported presentation when a tool cannot render inline', async () => {
+  const { resolveToolPresentation } = await import('../../src/renderer/tools/embedded');
+  expect(resolveToolPresentation({ presentations: ['compact'] }, 'inline')).toBe('compact');
+});

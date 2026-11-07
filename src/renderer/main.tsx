@@ -1,7 +1,7 @@
 import './styles/base.css';
 import { createRoot } from 'react-dom/client';
 import Launcher from './launcher/Launcher';
-import { initializeAppearance } from './settings/useAppearance';
+import { initializeAppearance } from './settings/usePreferences';
 
 initializeAppearance();
 

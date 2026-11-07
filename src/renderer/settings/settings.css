@@ -106,3 +106,40 @@
     display: none;
   }
 }
+
+.settings-panel fieldset.pinned-layout-options {
+  margin-top: 24px;
+}
+.layout-options {
+  display: grid;
+  gap: 8px;
+}
+.layout-options label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  cursor: pointer;
+}
+.layout-options label.is-selected {
+  border-color: var(--muted);
+  background: var(--selection);
+}
+.layout-options input {
+  accent-color: var(--accent);
+}
+.layout-options span {
+  display: grid;
+  gap: 4px;
+}
+.layout-options strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.layout-options small {
+  font-size: 11px;
+  color: var(--muted);
+}

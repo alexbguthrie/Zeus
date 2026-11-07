@@ -2,7 +2,7 @@ import { ipcMain, type IpcMainEvent, type IpcMainInvokeEvent } from 'electron';
 import type { LauncherWindow } from './launcher-window';
 import { isAppWindowSender, openAppWindow } from './app-windows';
 import { saveResizedImage } from './image-save';
-import { getPreferences, setAppearance } from './preferences';
+import { getPreferences, setAppearance, setPinnedLayout } from './preferences';
 
 /** Register approved operations and validate the sending window at this boundary. */
 export function registerIpc(launcher: LauncherWindow): void {
@@ -18,26 +18,36 @@ export function registerIpc(launcher: LauncherWindow): void {
     if (!trusted(event)) throw new Error('Unauthorized launcher sender.');
     return launcher.getState();
   });
-  ipcMain.on('zeus:prepared', (event, revision: unknown, height: unknown) => {
+  ipcMain.on('zeus:prepared', (event, revision: unknown, height: unknown, width: unknown) => {
     if (
       !trusted(event) ||
       typeof revision !== 'number' ||
       !Number.isInteger(revision) ||
       typeof height !== 'number' ||
-      !Number.isFinite(height)
+      !Number.isFinite(height) ||
+      (width !== undefined && (typeof width !== 'number' || !Number.isFinite(width)))
     )
       return;
-    launcher.prepared(revision, height);
+    launcher.prepared(revision, height, width);
   });
-  ipcMain.handle('zeus:resize', (event, revision: unknown, height: unknown) => {
+  ipcMain.handle('zeus:resize', (event, revision: unknown, height: unknown, width: unknown) => {
     if (
       !trusted(event) ||
       typeof revision !== 'number' ||
       typeof height !== 'number' ||
-      !Number.isFinite(height)
+      !Number.isFinite(height) ||
+      (width !== undefined && (typeof width !== 'number' || !Number.isFinite(width)))
     )
       return false;
-    return launcher.resize(revision, height);
+    return launcher.resize(revision, height, width);
+  });
+  ipcMain.on('zeus:window-error', (event, revision: unknown) => {
+    if (
+      !trusted(event) ||
+      (revision !== undefined && (typeof revision !== 'number' || !Number.isInteger(revision)))
+    )
+      return;
+    launcher.recover(revision);
   });
   ipcMain.on('zeus:hide', (event) => {
     if (trusted(event)) launcher.hide();
@@ -64,6 +74,10 @@ export function registerIpc(launcher: LauncherWindow): void {
   ipcMain.handle('zeus:set-appearance', (event, appearance: unknown) => {
     if (!trusted(event)) throw new Error('Unauthorized preferences update.');
     return setAppearance(appearance);
+  });
+  ipcMain.handle('zeus:set-pinned-layout', (event, layout: unknown) => {
+    if (!trusted(event)) throw new Error('Unauthorized preferences update.');
+    return setPinnedLayout(layout);
   });
   ipcMain.handle('zeus:open-application', async (event, id: unknown) => {
     if (!trusted(event)) throw new Error('Unauthorized application request.');

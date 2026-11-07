@@ -49,7 +49,6 @@ function PinnedPreviews() {
             <header className="concept-heading">
               <span className="concept-letter">{String.fromCharCode(65 + index)}</span>
               <h2>{concept.name}</h2>
-              {index === 0 && <span className="concept-pick">My pick</span>}
             </header>
             <div className="concept-stage">
               <PinnedWorkspace

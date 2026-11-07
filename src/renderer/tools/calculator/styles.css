@@ -59,3 +59,41 @@
   border-color: var(--accent);
   color: var(--surface);
 }
+
+/* Embedded presentations supported by this tool. */
+[data-tool-presentation] .calculator-body {
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+}
+[data-tool-presentation] .calculator-body > input {
+  padding: 9px;
+  font-size: 12px;
+}
+[data-tool-presentation] .calculator-keys {
+  display: flex;
+  flex: 0 0 auto;
+}
+[data-tool-presentation] .calculator-keys button {
+  display: none;
+}
+[data-tool-presentation] .calculator-keys .equals-key {
+  display: block;
+  width: 100%;
+  height: 30px;
+}
+[data-tool-presentation='inline'] .calculator-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 32px;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+}
+[data-tool-presentation='inline'] .calculator-body > input {
+  padding: 6px;
+}
+[data-tool-presentation='inline'] .calculation-result,
+[data-tool-presentation='inline'] .calculation-error {
+  min-height: 0;
+  font-size: 18px;
+}

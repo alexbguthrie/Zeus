@@ -32,6 +32,7 @@ beforeEach(() => {
       };
     }),
     prepared: vi.fn(),
+    recoverWindow: vi.fn(),
     resize: vi.fn(async () => true),
     pin: vi.fn(),
     launcher: vi.fn(),
@@ -39,8 +40,15 @@ beforeEach(() => {
     settings: vi.fn(),
     openApplication: vi.fn(async () => {}),
     openTool: vi.fn(async () => {}),
-    getPreferences: vi.fn(async () => ({ appearance: 'light', resolvedTheme: 'light' }) as const),
-    setAppearance: vi.fn(async () => ({ appearance: 'light', resolvedTheme: 'light' }) as const),
+    getPreferences: vi.fn(
+      async () => ({ appearance: 'light', resolvedTheme: 'light', pinnedLayout: 'strip' }) as const,
+    ),
+    setPinnedLayout: vi.fn(
+      async () => ({ appearance: 'light', resolvedTheme: 'light', pinnedLayout: 'strip' }) as const,
+    ),
+    setAppearance: vi.fn(
+      async () => ({ appearance: 'light', resolvedTheme: 'light', pinnedLayout: 'strip' }) as const,
+    ),
     onPreferences: vi.fn(() => () => {}),
   };
   window.zeusLauncher = bridge;
@@ -163,6 +171,8 @@ it('preserves pinned notes while recovering from a layout failure', async () => 
   fireEvent.click(screen.getByRole('button', { name: 'Timer tool' }));
   await screen.findByRole('alert');
   fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+  await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+  fireEvent.click(screen.getByRole('button', { name: 'Notes tool' }));
   const note = await screen.findByRole('textbox', { name: 'Quick note' });
   expect((note as HTMLTextAreaElement).value).toBe('Keep this note');
 });

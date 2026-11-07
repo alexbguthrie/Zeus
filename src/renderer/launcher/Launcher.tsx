@@ -1,6 +1,6 @@
 import PinnedWorkspace from '../pinned/PinnedWorkspace';
 import Settings from '../settings/Settings';
-import { useAppearance } from '../settings/useAppearance';
+import { usePreferences } from '../settings/usePreferences';
 import SearchBar from './SearchBar';
 import SectionPicker from './SectionPicker';
 import SearchResults from './SearchResults';
@@ -10,7 +10,7 @@ import './launcher.css';
 
 export default function Launcher() {
   const launcher = useLauncher();
-  const appearance = useAppearance();
+  const { preferences, setAppearance, setPinnedLayout, error } = usePreferences();
   const showSearch = !launcher.pinned && !launcher.settingsOpen && !launcher.windowError;
 
   return (
@@ -37,6 +37,7 @@ export default function Launcher() {
             />
           )}
           <PinnedWorkspace
+            variant={preferences.pinnedLayout}
             visible={launcher.pinned && !launcher.settingsOpen && !launcher.windowError}
             pending={!!window.zeusLauncher && !launcher.awake}
             onReturn={launcher.returnToLauncher}
@@ -44,10 +45,11 @@ export default function Launcher() {
           />
           {launcher.settingsOpen && !launcher.windowError && (
             <Settings
-              preferences={appearance.preferences}
-              onChange={(value) => void appearance.setAppearance(value)}
+              preferences={preferences}
+              onChange={(value) => void setAppearance(value)}
+              onLayoutChange={(layout) => void setPinnedLayout(layout)}
               onBack={launcher.returnToLauncher}
-              error={appearance.error}
+              error={error}
             />
           )}
           {launcher.pickerMounted && !launcher.windowError && <SectionPicker {...launcher} />}

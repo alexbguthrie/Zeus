@@ -9,8 +9,9 @@ const shell: LauncherBridge = {
     ipcRenderer.on('zeus:state', listener);
     return () => ipcRenderer.removeListener('zeus:state', listener);
   },
-  prepared: (revision, height) => ipcRenderer.send('zeus:prepared', revision, height),
-  resize: (revision, height) => ipcRenderer.invoke('zeus:resize', revision, height),
+  prepared: (revision, height, width) => ipcRenderer.send('zeus:prepared', revision, height, width),
+  resize: (revision, height, width) => ipcRenderer.invoke('zeus:resize', revision, height, width),
+  recoverWindow: (revision) => ipcRenderer.send('zeus:window-error', revision),
   pin: () => ipcRenderer.send('zeus:pin'),
   launcher: () => ipcRenderer.send('zeus:launcher'),
   hide: () => ipcRenderer.send('zeus:hide'),
@@ -18,11 +19,12 @@ const shell: LauncherBridge = {
   openTool: (id) => ipcRenderer.invoke('zeus:open-tool', id),
   settings: () => ipcRenderer.send('zeus:settings'),
   getPreferences: () => ipcRenderer.invoke('zeus:get-preferences'),
+  setPinnedLayout: (layout) => ipcRenderer.invoke('zeus:set-pinned-layout', layout),
   setAppearance: (appearance) => ipcRenderer.invoke('zeus:set-appearance', appearance),
   onPreferences(callback) {
     const listener = (
       _event: Electron.IpcRendererEvent,
-      preferences: import('../shared/appearance').Preferences,
+      preferences: import('../shared/preferences').Preferences,
     ) => callback(preferences);
     ipcRenderer.on('zeus:preferences', listener);
     return () => ipcRenderer.removeListener('zeus:preferences', listener);

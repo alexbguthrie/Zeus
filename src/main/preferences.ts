@@ -1,11 +1,18 @@
 import { app, BrowserWindow, nativeTheme } from 'electron';
 import fs from 'node:fs';
 import path from 'node:path';
-import type { Appearance, Preferences } from '../shared/appearance';
+import type { Appearance } from '../shared/appearance';
+import type { Preferences } from '../shared/preferences';
+import { DEFAULT_PINNED_LAYOUT, isPinnedLayout, type PinnedLayout } from '../shared/pinned';
 
 let appearance: Appearance = 'system';
+let pinnedLayout: PinnedLayout = DEFAULT_PINNED_LAYOUT;
 export function getPreferences(): Preferences {
-  return { appearance, resolvedTheme: nativeTheme.shouldUseDarkColors ? 'dark' : 'light' };
+  return {
+    appearance,
+    resolvedTheme: nativeTheme.shouldUseDarkColors ? 'dark' : 'light',
+    pinnedLayout,
+  };
 }
 function broadcast() {
   const preferences = getPreferences();
@@ -16,14 +23,28 @@ function broadcast() {
       window.setBackgroundColor(preferences.resolvedTheme === 'dark' ? '#222222' : '#ffffff');
   }
 }
+function save(nextAppearance: Appearance, nextLayout: PinnedLayout) {
+  const filename = path.join(app.getPath('userData'), 'beta-preferences.json');
+  fs.mkdirSync(path.dirname(filename), { recursive: true });
+  fs.writeFileSync(
+    `${filename}.tmp`,
+    JSON.stringify({ appearance: nextAppearance, pinnedLayout: nextLayout }),
+    'utf8',
+  );
+  fs.renameSync(`${filename}.tmp`, filename);
+}
 export function initializePreferences() {
+  appearance = 'system';
+  pinnedLayout = DEFAULT_PINNED_LAYOUT;
   try {
     const stored = JSON.parse(
       fs.readFileSync(path.join(app.getPath('userData'), 'beta-preferences.json'), 'utf8'),
     );
-    if (['system', 'light', 'dark'].includes(stored.appearance)) appearance = stored.appearance;
+    if (stored && ['system', 'light', 'dark'].includes(stored.appearance))
+      appearance = stored.appearance;
+    if (stored && isPinnedLayout(stored.pinnedLayout)) pinnedLayout = stored.pinnedLayout;
   } catch {
-    /* A first launch or invalid file uses the system appearance. */
+    /* Existing appearance-only files and first launches use the default layout. */
   }
   nativeTheme.themeSource = appearance;
   nativeTheme.on('updated', broadcast);
@@ -31,12 +52,16 @@ export function initializePreferences() {
 export function setAppearance(value: unknown): Preferences {
   if (value !== 'light' && value !== 'dark' && value !== 'system')
     throw new Error('Invalid appearance.');
-  const filename = path.join(app.getPath('userData'), 'beta-preferences.json');
-  fs.mkdirSync(path.dirname(filename), { recursive: true });
-  fs.writeFileSync(`${filename}.tmp`, JSON.stringify({ appearance: value }), 'utf8');
-  fs.renameSync(`${filename}.tmp`, filename);
+  save(value, pinnedLayout);
   appearance = value;
-  nativeTheme.themeSource = appearance;
+  nativeTheme.themeSource = value;
+  broadcast();
+  return getPreferences();
+}
+export function setPinnedLayout(value: unknown): Preferences {
+  if (!isPinnedLayout(value)) throw new Error('Invalid pinned layout.');
+  save(appearance, value);
+  pinnedLayout = value;
   broadcast();
   return getPreferences();
 }

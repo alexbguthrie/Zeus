@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { initializeAppearance } from '../../settings/useAppearance';
+import { initializeAppearance } from '../../settings/usePreferences';
 import ResizeImage from './ResizeImage';
 import './styles.css';
 

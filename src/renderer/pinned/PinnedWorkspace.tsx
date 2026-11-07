@@ -1,16 +1,17 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import { pinnedTools, type PinnedToolId } from '../tools/registry';
-import { embeddedTools } from '../tools/embedded';
+import { DEFAULT_PINNED_LAYOUT, pinnedLayouts, type PinnedLayout } from '../../shared/pinned';
+import { embeddedTools, resolveToolPresentation } from '../tools/embedded';
 import ToolIcon from '../tools/ToolIcon';
 import './pinned.css';
 import './variants.css';
 
-export type PinnedVariant = 'dock' | 'rail' | 'strip';
+export type PinnedVariant = PinnedLayout;
 type Props = {
   visible: boolean;
   pending: boolean;
   onReturn(): void;
-  onLayoutChange(): void;
+  onLayoutChange(width?: number): void;
   variant?: PinnedVariant;
   previewScope?: string;
   initialTool?: PinnedToolId;
@@ -21,7 +22,7 @@ export default function PinnedWorkspace({
   pending,
   onReturn,
   onLayoutChange,
-  variant,
+  variant = DEFAULT_PINNED_LAYOUT,
   previewScope,
   initialTool,
 }: Props) {
@@ -29,14 +30,29 @@ export default function PinnedWorkspace({
   const [statuses, setStatuses] = useState<Partial<Record<PinnedToolId, string | null>>>({});
   const dockButtons = useRef<(HTMLButtonElement | null)[]>([]);
   const id = useId();
-  const limit = variant ? 1 : 2;
+  const layout = pinnedLayouts[variant];
+  const limit = layout.maxOpenTools;
+  const active = open[open.length - 1];
+  const presentation = active
+    ? resolveToolPresentation(embeddedTools[active], layout.presentation)
+    : layout.presentation;
+  const width = open.length
+    ? Math.max(
+        layout.expandedWidth,
+        ...open.map((tool) => embeddedTools[tool].minContentWidth + layout.chromeWidth),
+      )
+    : layout.collapsedWidth;
   const onStatusChange = useCallback((tool: PinnedToolId, status: string | null) => {
     setStatuses((current) => (current[tool] === status ? current : { ...current, [tool]: status }));
   }, []);
 
+  useEffect(() => {
+    setOpen((current) => (current.length > limit ? current.slice(-limit) : current));
+  }, [limit]);
+
   useLayoutEffect(() => {
-    onLayoutChange();
-  }, [open, visible, onLayoutChange]);
+    onLayoutChange(width);
+  }, [open, visible, onLayoutChange, width, variant]);
   useEffect(() => {
     if (visible && !pending && !previewScope) dockButtons.current[0]?.focus();
   }, [visible, pending, previewScope]);
@@ -70,15 +86,14 @@ export default function PinnedWorkspace({
     <section
       className="pinned-workspace"
       data-variant={variant}
+      data-presentation={presentation}
+      style={{ width }}
       data-open={open.length > 0}
       hidden={!visible}
       aria-label="Pinned workspace"
       inert={pending || !visible}
     >
       <header className="belt-bar">
-        <div className="belt-heading">
-          <strong>Zeus</strong>
-        </div>
         {pinnedTools.map(
           (tool) =>
             statuses[tool.id] && (
@@ -126,18 +141,13 @@ export default function PinnedWorkspace({
               <ToolIcon tool={tool.id} />
               {statuses[tool.id] && <span className="orb-dot" />}
             </span>
-            {!variant && (
-              <span className="belt-tool-name">
-                {tool.title}
-                <kbd>⌘{index + 1}</kbd>
-              </span>
-            )}
           </button>
         ))}
       </nav>
       <div className={`belt-cards ${open.length === 1 ? 'single-card' : ''}`}>
         {pinnedTools.map((tool) => {
-          const View = embeddedTools[tool.id];
+          const definition = embeddedTools[tool.id];
+          const View = definition.View;
           const index = open.indexOf(tool.id);
           return (
             <article
@@ -150,12 +160,6 @@ export default function PinnedWorkspace({
               aria-label={`${tool.title} card`}
             >
               <header className="card-header">
-                {!variant && (
-                  <span>
-                    <ToolIcon tool={tool.id} />
-                    {tool.title}
-                  </span>
-                )}
                 <button
                   onClick={() => toggle(tool.id)}
                   aria-label={`Tuck away ${tool.id}`}
@@ -164,7 +168,11 @@ export default function PinnedWorkspace({
                   ×
                 </button>
               </header>
-              <View storageScope={previewScope} onStatusChange={onStatusChange} />
+              <View
+                storageScope={previewScope}
+                onStatusChange={onStatusChange}
+                presentation={resolveToolPresentation(definition, layout.presentation)}
+              />
             </article>
           );
         })}

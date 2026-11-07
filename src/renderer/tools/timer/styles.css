@@ -84,3 +84,47 @@
   font-size: 18px;
   color: var(--muted);
 }
+
+/* Embedded presentations supported by this tool. */
+[data-tool-presentation] .timer-body {
+  padding: 8px 12px 12px;
+}
+[data-tool-presentation] .timer-dial {
+  gap: 3px;
+  min-height: 35px;
+}
+[data-tool-presentation] .timer-dial output {
+  font-size: 30px;
+  font-weight: 400;
+}
+[data-tool-presentation] .timer-progress {
+  margin: 8px 0 10px;
+}
+[data-tool-presentation] .timer-presets {
+  margin-bottom: 9px;
+}
+[data-tool-presentation] .primary-control {
+  padding: 7px 12px;
+  min-width: 78px;
+}
+[data-tool-presentation='inline'] .timer-body {
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+}
+[data-tool-presentation='inline'] .timer-dial {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+[data-tool-presentation='inline'] .timer-dial output {
+  font-size: 24px;
+}
+[data-tool-presentation='inline'] .timer-dial span,
+[data-tool-presentation='inline'] .timer-progress,
+[data-tool-presentation='inline'] .timer-presets {
+  display: none;
+}
+[data-tool-presentation='inline'] .timer-controls {
+  height: 32px;
+}

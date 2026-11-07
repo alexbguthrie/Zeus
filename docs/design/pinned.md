@@ -1,7 +1,8 @@
 # Compact pinned directions
 
 Open `/previews/pinned/` in the browser preview to try the actual tool views in
-three layouts. These are experiments; the active native layout has not been selected.
+three layouts. Users choose a saved layout in Settings → Pinned layout. Slim bar is
+the default for new profiles and existing profiles without a saved layout.
 
 | Direction      | Presentation                                               |
 | -------------- | ---------------------------------------------------------- |
@@ -37,3 +38,19 @@ A tool stays in its own folder when its presentation changes. Marking it `pinned
 adds it to the pinned catalog and requires an embedded view registration. Marking it
 `launcher: true` requires its standalone page and explicit native registration. Future
 user preferences can choose among eligible tools without moving source files.
+
+## Layout and tool contracts
+
+`src/shared/pinned.ts` defines workspace layouts, their preferred presentation, base
+width, and open-tool limit. `tools/embedded.ts` separately registers each tool's view,
+nonempty list of supported presentations, and minimum content width. The workspace
+passes the selected presentation to the tool and falls back to a supported one when
+needed. A future tool can provide a larger compact view without pretending to fit inline.
+
+Changing layout keeps tool views mounted, preserving notes, calculations, and running
+timers. Native windows resize and remain anchored to the display's top-right corner.
+The width requests are validated and clamped by Electron. Recovery errors can expand
+a tiny window enough to keep the retry controls usable.
+
+Native preferences retain their existing file location and store appearance and layout
+together. Browser preferences use separate keys and leave preview notes isolated.

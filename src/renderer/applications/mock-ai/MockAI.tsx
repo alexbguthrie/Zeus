@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { mockReply } from './replies';
-import { useAppearance } from '../../settings/useAppearance';
+import { usePreferences } from '../../settings/usePreferences';
 
 type Message = { id: string; role: 'user' | 'assistant'; text: string };
 type Chat = { id: string; title: string; messages: Message[] };
@@ -59,7 +59,7 @@ function Icon({ name }: { name: string }) {
 }
 
 export default function MockAI() {
-  useAppearance();
+  usePreferences();
   const [chats, setChats] = useState<Chat[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [draft, setDraft] = useState('');

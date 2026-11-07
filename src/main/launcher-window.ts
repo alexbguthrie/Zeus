@@ -1,3 +1,4 @@
+import { DEFAULT_PINNED_WIDTH } from '../shared/pinned';
 import { BrowserWindow, screen, type Rectangle } from 'electron';
 import path from 'node:path';
 import type { LauncherMode, LauncherState } from '../shared/launcher';
@@ -46,15 +47,22 @@ export function createLauncherWindow() {
     moving = false;
   }
   function heightFor(mode: LauncherMode, height: number) {
-    return Math.max(mode === 'pinned' ? 92 : 126, Math.min(620, Math.ceil(height)));
+    return Math.max(mode === 'pinned' ? 64 : 126, Math.min(620, Math.ceil(height)));
   }
-  function boundsFor(mode: LauncherMode, height: number): Rectangle {
+  function boundsFor(
+    mode: LauncherMode,
+    height: number,
+    requestedWidth = DEFAULT_PINNED_WIDTH,
+  ): Rectangle {
     const display =
       mode === 'pinned' && window.isVisible()
         ? screen.getDisplayMatching(window.getBounds())
         : screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
     const area = display.workArea;
-    const width = mode === 'pinned' ? 520 : 740;
+    const width = Math.min(
+      area.width - 24,
+      mode === 'pinned' ? Math.max(64, Math.min(800, Math.ceil(requestedWidth))) : 740,
+    );
     return {
       x:
         mode === 'pinned'
@@ -94,7 +102,7 @@ export function createLauncherWindow() {
     }, 1500);
   }
 
-  function reveal(revision: number, height: number) {
+  function reveal(revision: number, height: number, width?: number) {
     if (
       !destination ||
       state.mode === 'hidden' ||
@@ -104,7 +112,7 @@ export function createLauncherWindow() {
     )
       return;
     clearTimeout(preparationTimeout);
-    const target = { ...destination, height: heightFor(state.mode, height) };
+    const target = boundsFor(state.mode, height, width);
     const from = window.isVisible() ? window.getBounds() : target;
     moving = true;
     // Set the final size once while transparent. Only position/opacity animate,
@@ -166,26 +174,19 @@ export function createLauncherWindow() {
 
   function repositionPinned() {
     if (state.mode === 'pinned' && state.ready) {
-      const area = screen.getDisplayMatching(window.getBounds()).workArea;
-      window.setBounds(
-        {
-          x: area.x + area.width - 532,
-          y: area.y + 12,
-          width: 520,
-          height: window.getBounds().height,
-        },
-        false,
-      );
+      const bounds = window.getBounds();
+      window.setBounds(boundsFor('pinned', bounds.height, bounds.width), false);
     }
   }
   screen.on('display-metrics-changed', repositionPinned);
   screen.on('display-removed', repositionPinned);
 
-  function resize(revision: number, height: number): boolean {
+  function resize(revision: number, height: number, width?: number): boolean {
     if (revision !== state.revision || !state.ready || state.mode === 'hidden') return false;
-    const nextHeight = heightFor(state.mode, height);
-    if (window.getContentSize()[1] !== nextHeight)
-      window.setContentSize(state.mode === 'pinned' ? 520 : 740, nextHeight);
+    const target = boundsFor(state.mode, height, width);
+    const current = window.getBounds();
+    if (current.width !== target.width || current.height !== target.height)
+      window.setBounds(target, false);
     return true;
   }
 
@@ -196,6 +197,20 @@ export function createLauncherWindow() {
     hide: hideLauncher,
     prepared: reveal,
     resize,
+    recover(revision?: number) {
+      if (
+        window.isDestroyed() ||
+        !window.isVisible() ||
+        !state.ready ||
+        (revision !== undefined && revision !== state.revision)
+      )
+        return;
+      const current = window.getBounds();
+      window.setBounds(
+        boundsFor(state.mode, Math.max(126, current.height), Math.max(360, current.width)),
+        false,
+      );
+    },
     dispose() {
       quitting = true;
       cancelMotion();

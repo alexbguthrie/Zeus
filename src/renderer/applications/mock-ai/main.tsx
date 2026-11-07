@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import MockAI from './MockAI';
 import './styles.css';
-import { initializeAppearance } from '../../settings/useAppearance';
+import { initializeAppearance } from '../../settings/usePreferences';
 
 initializeAppearance();
 

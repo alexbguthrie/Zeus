@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
-import type { AppearanceBridge, Preferences } from '../shared/appearance';
+import type { AppearanceBridge } from '../shared/appearance';
+import type { Preferences } from '../shared/preferences';
 
 // Sample apps may observe appearance, but cannot control the launcher/settings.
 const appearance: AppearanceBridge = {

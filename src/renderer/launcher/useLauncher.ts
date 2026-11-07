@@ -1,3 +1,4 @@
+import { DEFAULT_PINNED_WIDTH, PINNED_WINDOW_PADDING } from '../../shared/pinned';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { SampleApplication } from '../applications/registry';
 import type { LauncherTool } from '../tools/registry';
@@ -19,7 +20,7 @@ export function useLauncher() {
   const [pickerShown, setPickerShown] = useState(false);
   const pickerTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const idleSuppressed = useRef(false);
-  const lastLayout = useRef<{ revision: number; height: number } | null>(null);
+  const lastLayout = useRef<{ revision: number; height: number; width?: number } | null>(null);
   const [selected, setSelected] = useState(0);
   const [active, setActive] = useState<LauncherSection | null>(null);
   const [message, setMessage] = useState('');
@@ -31,7 +32,11 @@ export function useLauncher() {
   const [awake, setAwake] = useState(document.documentElement.dataset.native !== 'true');
   const [pinned, setPinned] = useState(false);
   const [toolLayoutVersion, setToolLayoutVersion] = useState(0);
-  const toolsChanged = useCallback(() => setToolLayoutVersion((value) => value + 1), []);
+  const [pinnedWidth, setPinnedWidth] = useState(DEFAULT_PINNED_WIDTH);
+  const toolsChanged = useCallback((width?: number) => {
+    if (width !== undefined) setPinnedWidth(width + PINNED_WINDOW_PADDING);
+    setToolLayoutVersion((value) => value + 1);
+  }, []);
   const idleGeneration = useRef(0);
 
   const cancelIdle = useCallback(() => {
@@ -75,6 +80,7 @@ export function useLauncher() {
     pinned,
     settingsOpen,
     toolLayoutVersion,
+    pinnedWidth,
     launchError: launchFailure?.message ?? null,
   });
 

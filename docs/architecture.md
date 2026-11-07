@@ -55,6 +55,13 @@ inside hidden panels when tucked away or when the workspace is hidden, preservin
 notes, calculations, and a running timer. `pinned/` owns the container and its layout,
 not individual tool implementations. Preview instances supply a separate note storage scope.
 
+Layout options live in `src/shared/pinned.ts`; saved appearance and layout types live
+in `src/shared/preferences.ts`. Settings and the active workspace consume the same
+preferences through `settings/usePreferences.ts`. Tool registrations declare supported
+presentations and a minimum content width independently of the chosen workspace layout.
+The native handshake accepts validated content widths as well as heights, so the window
+fits the actual layout while staying anchored to the display edge.
+
 ## Styling and builds
 
 Global defaults and theme tokens live in `renderer/styles/`. Feature styles stay

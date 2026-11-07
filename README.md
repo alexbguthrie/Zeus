@@ -76,8 +76,8 @@ Run `npm run dev:browser` and open
 icon-only layouts. Click tool icons to open or tuck away a tool, and use the theme
 switch to check both appearances. Preview notes use separate storage keys.
 
-These are mock directions; the active native layout remains unchanged until a
-variant is chosen. See [the design notes](docs/design/pinned.md).
+Choose a saved layout in **Settings… → Pinned layout**. Slim bar is the default;
+Micro dock and Side rail remain available. See [the design notes](docs/design/pinned.md).
 
 ## Use the launcher
 
@@ -86,7 +86,7 @@ variant is chosen. See [the design notes](docs/design/pinned.md).
 - Search **Zeus AI** or **Resize Image** to open their windows.
 - Press Up from an empty search to pin Notes, Timer, and Calculator.
 - Escape backs out and then hides the launcher. The unpinned launcher hides on blur.
-- Open **Settings…** from the tray for Light, Dark, and System appearance.
+- Open **Settings…** from the tray for Light, Dark, and System appearance, and your pinned layout.
 - Browser settings are available at `/?view=settings`.
 
 Files, Actions, and Clipboard contain sample data. Zeus AI uses local mock replies.

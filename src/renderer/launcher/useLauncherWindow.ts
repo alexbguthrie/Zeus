@@ -8,7 +8,7 @@ type Options = {
   setSettingsOpen(value: boolean): void;
   setAwake(value: boolean): void;
   input: RefObject<HTMLInputElement | null>;
-  lastLayout: RefObject<{ revision: number; height: number } | null>;
+  lastLayout: RefObject<{ revision: number; height: number; width?: number } | null>;
   idleGeneration: RefObject<number>;
   expanded: boolean;
   pickerMounted: boolean;
@@ -17,6 +17,7 @@ type Options = {
   pinned: boolean;
   settingsOpen: boolean;
   toolLayoutVersion: number;
+  pinnedWidth: number;
   launchError: string | null;
 };
 
@@ -38,6 +39,7 @@ export function useLauncherWindow({
   pinned,
   settingsOpen,
   toolLayoutVersion,
+  pinnedWidth,
   launchError,
 }: Options) {
   const [nativeState, setNativeState] = useState<LauncherState>({
@@ -90,6 +92,7 @@ export function useLauncherWindow({
         // A newer state event can make the initial snapshot unnecessary.
         if (disposed || receivedState) return;
         setFailure({ kind: 'state', message: 'Could not connect to the Zeus window. Try again.' });
+        shell.recoverWindow();
         setLayoutReady(true);
       });
     return () => {
@@ -105,10 +108,12 @@ export function useLauncherWindow({
     let cancelled = false;
     let frame = 0;
     const revision = nativeState.revision;
+    const width = pinned ? pinnedWidth : undefined;
     function failLayout() {
       if (cancelled || lifecycle.current.revision !== revision) return;
       lastLayout.current = null;
       setFailure({ kind: 'layout', message: 'Could not update the Zeus window. Try again.' });
+      shell?.recoverWindow(revision);
       // The compact recovery panel fits the last accepted window size.
       setLayoutReady(true);
     }
@@ -119,7 +124,7 @@ export function useLauncherWindow({
         frame = requestAnimationFrame(() => {
           if (!cancelled) {
             try {
-              shell.prepared(revision, root.getBoundingClientRect().height);
+              shell.prepared(revision, root.getBoundingClientRect().height, width);
             } catch {
               failLayout();
             }
@@ -128,20 +133,24 @@ export function useLauncherWindow({
       });
     } else {
       const height = root.getBoundingClientRect().height;
-      if (lastLayout.current?.revision === revision && lastLayout.current.height === height) {
+      if (
+        lastLayout.current?.revision === revision &&
+        lastLayout.current.height === height &&
+        lastLayout.current.width === width
+      ) {
         setLayoutReady(true);
         return;
       }
       setLayoutReady(false);
       void shell
-        .resize(revision, height)
+        .resize(revision, height, width)
         .then((accepted) => {
           if (cancelled || lifecycle.current.revision !== revision) return;
           if (!accepted) {
             failLayout();
             return;
           }
-          lastLayout.current = { revision, height };
+          lastLayout.current = { revision, height, width };
           setLayoutReady(true);
           if (!expanded && !settingsOpen) input.current?.focus();
         })
@@ -160,6 +169,7 @@ export function useLauncherWindow({
     pinned,
     settingsOpen,
     toolLayoutVersion,
+    pinnedWidth,
     launchError,
     retryVersion,
     failure,

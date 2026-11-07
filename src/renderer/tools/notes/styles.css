@@ -32,3 +32,21 @@
   color: var(--subtle);
   font-size: 9px;
 }
+
+/* Embedded presentations supported by this tool. */
+[data-tool-presentation] .note-body textarea {
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+[data-tool-presentation] .note-body footer {
+  padding: 8px 12px;
+  font-size: 10px;
+}
+[data-tool-presentation='inline'] .note-body footer {
+  display: none;
+}
+[data-tool-presentation='inline'] .note-body textarea {
+  padding: 8px 12px;
+  line-height: 1.5;
+}

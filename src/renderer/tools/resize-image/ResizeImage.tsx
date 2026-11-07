@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAppearance } from '../../settings/useAppearance';
+import { usePreferences } from '../../settings/usePreferences';
 import {
   MAX_EDGE,
   MAX_PIXELS,
@@ -25,7 +25,7 @@ function size(bytes: number) {
 }
 
 export default function ResizeImage() {
-  useAppearance();
+  usePreferences();
   const picker = useRef<HTMLInputElement>(null);
   const generation = useRef(0);
   const [source, setSource] = useState<Source | null>(null);
