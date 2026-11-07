@@ -11,6 +11,11 @@ export default function ToolIcon({ tool }: { tool: ToolId }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
+      {tool === 'stocks' && (
+        <>
+          <path d="M4 19V5M4 19h16M7 14l4-5 4 3 5-7M16 5h4v4" />
+        </>
+      )}
       {tool === 'resize-image' && (
         <>
           <rect x="4" y="4" width="16" height="16" rx="3" />

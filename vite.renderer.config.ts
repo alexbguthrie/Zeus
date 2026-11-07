@@ -24,6 +24,7 @@ export const rendererConfig = defineConfig({
     rollupOptions: {
       input: {
         launcher: resolve('src/renderer/index.html'),
+        stocks: resolve('src/renderer/tools/stocks/index.html'),
         pinnedPreviews: resolve('src/renderer/previews/pinned/index.html'),
         mockAI: resolve('src/renderer/applications/mock-ai/index.html'),
         resizeImage: resolve('src/renderer/tools/resize-image/index.html'),

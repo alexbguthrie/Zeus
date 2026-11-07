@@ -66,7 +66,8 @@ export function registerIpc(launcher: LauncherWindow): void {
     if (
       !trusted(event) &&
       !isAppWindowSender(event, 'mock-ai') &&
-      !isAppWindowSender(event, 'resize-image')
+      !isAppWindowSender(event, 'resize-image') &&
+      !isAppWindowSender(event, 'stocks')
     )
       throw new Error('Unauthorized preferences request.');
     return getPreferences();
@@ -82,9 +83,9 @@ export function registerIpc(launcher: LauncherWindow): void {
   ipcMain.handle('zeus:open-application', async (event, id: unknown) => {
     if (!trusted(event)) throw new Error('Unauthorized application request.');
     // App IDs select fixed local pages; renderer-supplied paths are never used.
-    if (id !== 'mock-ai') throw new Error('Unknown application.');
+    if (id !== 'mock-ai' && id !== 'stocks') throw new Error('Unknown application.');
     const revision = launcher.getState().revision;
-    await openAppWindow('mock-ai');
+    await openAppWindow(id);
     // Keep failures visible and leave a newer launcher session alone.
     if (launcher.getState().revision === revision) launcher.hide();
   });

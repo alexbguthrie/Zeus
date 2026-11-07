@@ -4,6 +4,15 @@ import { getPreferences } from './preferences';
 import { loadRenderer } from './renderer-pages';
 
 const appPages = {
+  stocks: {
+    title: 'Stocks',
+    page: 'tools/stocks/index.html',
+    preload: 'application',
+    width: 700,
+    height: 560,
+    minWidth: 420,
+    minHeight: 360,
+  },
   'mock-ai': {
     title: 'Zeus AI',
     page: 'applications/mock-ai/index.html',

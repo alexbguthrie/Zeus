@@ -47,6 +47,7 @@ beforeEach(() => {
 
 it.each([
   ['zeus:open-application', 'mock-ai'],
+  ['zeus:open-application', 'stocks'],
   ['zeus:open-tool', 'resize-image'],
 ])('keeps the launcher visible when %s fails', async (channel, id) => {
   const { callback, event, hide } = setup(channel);

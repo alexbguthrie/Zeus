@@ -1,6 +1,13 @@
 // Launcher-facing sample apps. The native process has its own fixed allowlist.
 export const applications = [
   {
+    id: 'stocks',
+    title: 'Stocks',
+    description: 'An example watchlist with demo quotes',
+    keywords: 'ticker shares market watchlist demo',
+    page: 'tools/stocks/index.html',
+  },
+  {
     id: 'mock-ai',
     title: 'Zeus AI',
     description: 'A sample AI chat app',

@@ -19,7 +19,7 @@ function broadcast() {
   for (const window of BrowserWindow.getAllWindows()) {
     if (window.isDestroyed() || window.webContents.isDestroyed()) continue;
     window.webContents.send('zeus:preferences', preferences);
-    if (['Zeus AI', 'Resize Image'].includes(window.getTitle()))
+    if (['Zeus AI', 'Resize Image', 'Stocks'].includes(window.getTitle()))
       window.setBackgroundColor(preferences.resolvedTheme === 'dark' ? '#222222' : '#ffffff');
   }
 }

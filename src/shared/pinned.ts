@@ -4,6 +4,7 @@ export type ToolPresentation = 'compact' | 'inline';
 export const pinnedLayouts = {
   dock: {
     title: 'Micro dock',
+    orientation: 'horizontal',
     description: 'A small dock with a tool below.',
     presentation: 'compact',
     collapsedWidth: 178,
@@ -13,6 +14,7 @@ export const pinnedLayouts = {
   },
   rail: {
     title: 'Side rail',
+    orientation: 'vertical',
     description: 'Vertical icons with a tool alongside.',
     presentation: 'compact',
     collapsedWidth: 42,
@@ -22,6 +24,7 @@ export const pinnedLayouts = {
   },
   strip: {
     title: 'Slim bar',
+    orientation: 'horizontal',
     description: 'A shallow row for quick tools.',
     presentation: 'inline',
     collapsedWidth: 360,

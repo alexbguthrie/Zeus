@@ -1,4 +1,12 @@
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react';
 import { pinnedTools, type PinnedToolId } from '../tools/registry';
 import { DEFAULT_PINNED_LAYOUT, pinnedLayouts, type PinnedLayout } from '../../shared/pinned';
 import { embeddedTools, resolveToolPresentation } from '../tools/embedded';
@@ -36,12 +44,15 @@ export default function PinnedWorkspace({
   const presentation = active
     ? resolveToolPresentation(embeddedTools[active], layout.presentation)
     : layout.presentation;
+  const toolbarWidth =
+    layout.orientation === 'horizontal' ? pinnedTools.length * 36 + 44 : layout.collapsedWidth;
   const width = open.length
     ? Math.max(
         layout.expandedWidth,
+        toolbarWidth,
         ...open.map((tool) => embeddedTools[tool].minContentWidth + layout.chromeWidth),
       )
-    : layout.collapsedWidth;
+    : Math.max(layout.collapsedWidth, toolbarWidth);
   const onStatusChange = useCallback((tool: PinnedToolId, status: string | null) => {
     setStatuses((current) => (current[tool] === status ? current : { ...current, [tool]: status }));
   }, []);
@@ -87,7 +98,7 @@ export default function PinnedWorkspace({
       className="pinned-workspace"
       data-variant={variant}
       data-presentation={presentation}
-      style={{ width }}
+      style={{ width, '--pinned-tool-count': pinnedTools.length } as CSSProperties}
       data-open={open.length > 0}
       hidden={!visible}
       aria-label="Pinned workspace"

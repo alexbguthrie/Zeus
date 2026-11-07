@@ -33,6 +33,15 @@ export const tools = [
     launcher: true,
     page: 'tools/resize-image/index.html',
   },
+  // Removable example: shared by an app window and a pinned view.
+  {
+    id: 'stocks',
+    title: 'Stocks',
+    description: 'Example stock watchlist with demo quotes',
+    keywords: 'ticker watchlist shares market demo',
+    pinned: true,
+    launcher: false,
+  },
 ] as const;
 
 export type Tool = (typeof tools)[number];
