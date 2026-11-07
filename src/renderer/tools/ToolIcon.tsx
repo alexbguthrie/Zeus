@@ -1,6 +1,6 @@
-import type { PinnedTool } from './PinnedWorkspace';
+import type { ToolId } from './registry';
 
-export default function PinnedToolIcon({ tool }: { tool: PinnedTool }) {
+export default function ToolIcon({ tool }: { tool: ToolId }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -11,6 +11,12 @@ export default function PinnedToolIcon({ tool }: { tool: PinnedTool }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
+      {tool === 'resize-image' && (
+        <>
+          <rect x="4" y="4" width="16" height="16" rx="3" />
+          <path d="M8 14V8h6M8 8l8 8m0-5v5h-5" />
+        </>
+      )}
       {tool === 'notes' && (
         <>
           <path d="M14 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7" />

@@ -1,12 +1,12 @@
 import { applications, type SampleApplication } from '../applications/registry';
-import { tools, type Tool } from '../tools/registry';
+import { launcherTools, type LauncherTool } from '../tools/registry';
 import { launcherSections, type LauncherSection } from './sections';
 
 export type SearchResult = {
   id: string;
   title: string;
   application?: SampleApplication;
-  tool?: Tool;
+  tool?: LauncherTool;
   section?: LauncherSection;
   sample?: string;
 };
@@ -29,7 +29,7 @@ export function findResults(query: string, active: LauncherSection | null): Sear
       : [];
   const toolResults: SearchResult[] =
     active?.id === 'tools' || (!active && search)
-      ? tools
+      ? launcherTools
           .filter((tool) =>
             `${tool.title} ${tool.description} ${tool.keywords}`.toLowerCase().includes(search),
           )

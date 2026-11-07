@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { SampleApplication } from '../applications/registry';
-import type { Tool } from '../tools/registry';
+import type { LauncherTool } from '../tools/registry';
 import { IDLE_DELAY_MS, type LauncherSection } from './sections';
 import { findResults, type SearchResult } from './search';
 import { useLauncherWindow } from './useLauncherWindow';
@@ -145,7 +145,7 @@ export function useLauncher() {
     }
   }
 
-  async function launchTool(tool: Tool) {
+  async function launchTool(tool: LauncherTool) {
     if (launching) return;
     cancelIdle();
     setLaunching(true);

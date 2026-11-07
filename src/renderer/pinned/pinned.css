@@ -132,7 +132,7 @@ html[data-native='true'][data-pinned='true'] .stage {
   display: flex;
   flex-direction: column;
 }
-.tool-card + .tool-card {
+.tool-card[data-first='false'] {
   border-left: 1px solid var(--border);
 }
 .card-header {
@@ -166,187 +166,6 @@ html[data-native='true'][data-pinned='true'] .stage {
   background: var(--border);
   color: var(--accent);
 }
-.note-body {
-  display: flex;
-  flex: 1;
-  min-height: 0;
-  flex-direction: column;
-}
-.note-body textarea {
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  resize: none;
-  border: none;
-  padding: 5px 16px;
-  font: inherit;
-  font-size: 13px;
-  line-height: 1.8;
-  outline: none;
-  color: var(--text);
-  background: transparent;
-}
-.note-body textarea:focus-visible {
-  box-shadow: inset 2px 0 var(--subtle);
-}
-.note-body textarea::placeholder {
-  color: var(--subtle);
-}
-.note-body footer {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-  padding: 12px 14px;
-  color: var(--subtle);
-  font-size: 9px;
-}
-.timer-body {
-  flex: 1;
-  min-height: 0;
-  padding: 5px 16px 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.timer-dial {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex: 1;
-  min-height: 64px;
-}
-.timer-dial output {
-  font-size: 34px;
-  font-weight: 300;
-  letter-spacing: -1px;
-  font-variant-numeric: tabular-nums;
-}
-.timer-dial span {
-  font-size: 10px;
-  color: var(--subtle);
-}
-.timer-progress {
-  width: 100%;
-  max-width: 170px;
-  height: 2px;
-  background: var(--border-strong);
-  margin: 12px 0 18px;
-  overflow: hidden;
-  border-radius: 1px;
-}
-.timer-progress span {
-  display: block;
-  height: 100%;
-  background: var(--accent);
-  transition: width 250ms linear;
-}
-.timer-presets {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 16px;
-}
-.timer-presets button {
-  padding: 5px 8px;
-  font-size: 10px;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  color: var(--muted);
-}
-.timer-presets button[aria-pressed='true'] {
-  color: var(--text);
-  background: var(--hover);
-  border-color: var(--border-strong);
-}
-.timer-presets button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-.timer-controls {
-  display: flex;
-  gap: 8px;
-}
-.primary-control {
-  min-width: 96px;
-  padding: 8px 15px;
-  border: 1px solid var(--accent);
-  border-radius: 7px;
-  background: var(--accent);
-  color: var(--surface);
-  font-size: 11px;
-  font-weight: 500;
-}
-.reset-timer {
-  width: 31px;
-  background: var(--hover);
-  border: 1px solid var(--border-strong);
-  border-radius: 7px;
-  font-size: 18px;
-  color: var(--muted);
-}
-.calculator-body {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  flex: 1;
-  min-height: 0;
-  padding: 0 12px 12px;
-}
-.calculator-body > input {
-  width: 100%;
-  background: var(--field);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--muted);
-  padding: 6px 8px;
-  text-align: right;
-  font-size: 11px;
-}
-.calculation-result {
-  min-height: 29px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: right;
-  padding: 0 3px;
-  font-size: 25px;
-  font-weight: 400;
-  font-variant-numeric: tabular-nums;
-}
-.calculation-error {
-  min-height: 29px;
-  font-size: 10px;
-  color: var(--error);
-  text-align: right;
-}
-.calculator-keys {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
-  flex: 1;
-  min-height: 0;
-}
-.calculator-keys button {
-  min-height: 0;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--raised);
-  color: var(--accent);
-  font-size: 12px;
-}
-.calculator-keys button:hover {
-  background: var(--border);
-}
-.calculator-keys .operator-key {
-  background: var(--selection);
-  color: var(--text);
-}
-.calculator-keys .equals-key {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--surface);
-}
 [data-native='true'] [data-layout-ready='false'] .belt-cards {
   visibility: hidden;
 }
@@ -366,7 +185,7 @@ html[data-native='true'][data-pinned='true'] .stage {
     max-height: 48vh;
     overflow-y: auto;
   }
-  .tool-card + .tool-card {
+  .tool-card[data-first='false'] {
     border-left: 0;
   }
 }
@@ -375,4 +194,9 @@ html[data-native='true'][data-pinned='true'] .stage {
     animation: none !important;
     transition: none !important;
   }
+}
+
+.pinned-workspace[hidden],
+.tool-card[hidden] {
+  display: none;
 }

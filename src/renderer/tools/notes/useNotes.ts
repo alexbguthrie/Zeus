@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 
 const NOTE_KEY = 'zeus-toolbelt.note.v1';
-function readNote() {
+function readNote(key: string) {
   try {
-    return localStorage.getItem(NOTE_KEY) ?? '';
+    return localStorage.getItem(key) ?? '';
   } catch {
     return '';
   }
 }
 
-export function useNotes() {
-  const [note, setNote] = useState(readNote);
+export function useNotes(storageKey = NOTE_KEY) {
+  const [note, setNote] = useState(() => readNote(storageKey));
   const [saved, setSaved] = useState(true);
   useEffect(() => {
     try {
-      localStorage.setItem(NOTE_KEY, note);
+      localStorage.setItem(storageKey, note);
       setSaved(true);
     } catch {
       setSaved(false);
     }
-  }, [note]);
+  }, [note, storageKey]);
 
   const wordCount = note.trim() ? note.trim().split(/\s+/).length : 0;
   return { note, setNote, saved, wordCount };

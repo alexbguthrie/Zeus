@@ -1,0 +1,127 @@
+.pinned-preview {
+  max-width: 1440px;
+  margin: auto;
+  padding: 32px 44px 42px;
+}
+.preview-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.preview-brand {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 19px;
+  font-weight: 600;
+}
+.preview-brand span {
+  margin-left: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+.theme-switch {
+  display: flex;
+  padding: 3px;
+  gap: 3px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+.theme-switch button {
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 11px;
+  font-size: 12px;
+}
+.theme-switch button[aria-pressed='true'] {
+  background: var(--selection);
+  color: var(--text);
+}
+.preview-intro {
+  margin: 66px 0 40px;
+}
+.preview-intro .eyebrow {
+  margin: 0 0 13px;
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+.preview-intro h1 {
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -1.2px;
+}
+.preview-intro > p:last-child {
+  margin: 13px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+.concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+.concept-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.concept-letter {
+  color: var(--subtle);
+  font-size: 11px;
+}
+.concept-heading h2 {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+}
+.concept-pick {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 10px;
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+.concept-stage {
+  min-height: 340px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px 12px;
+  background: var(--raised);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: auto;
+}
+.concept-description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 15px 2px 0;
+}
+.preview-note {
+  color: var(--subtle);
+  font-size: 11px;
+  margin-top: 40px;
+}
+@media (max-width: 1000px) {
+  .concept-grid {
+    grid-template-columns: 1fr;
+  }
+  .concept-stage {
+    min-height: 290px;
+  }
+  .pinned-preview {
+    max-width: 640px;
+    padding: 24px;
+  }
+  .preview-intro {
+    margin-top: 44px;
+  }
+}

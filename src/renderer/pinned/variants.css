@@ -1,0 +1,191 @@
+/* Experimental layouts, shown in the pinned preview gallery. */
+.pinned-workspace[data-variant] {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  border-radius: 12px;
+}
+.pinned-workspace[data-variant] .belt-bar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1;
+  width: 28px;
+  height: 30px;
+  padding: 0;
+}
+.pinned-workspace[data-variant] .belt-heading,
+.pinned-workspace[data-variant] .belt-running,
+.pinned-workspace[data-variant] .card-header {
+  display: none;
+}
+.pinned-workspace[data-variant] .belt-return {
+  width: 28px;
+  height: 28px;
+}
+.pinned-workspace[data-variant] .belt-dock {
+  width: 176px;
+  height: 40px;
+  gap: 4px;
+  padding: 5px 38px 5px 5px;
+}
+.pinned-workspace[data-variant] .belt-tool {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 30px;
+  padding: 0;
+  border-radius: 7px;
+}
+.pinned-workspace[data-variant] .belt-orb svg {
+  width: 17px;
+  height: 17px;
+}
+.pinned-workspace[data-variant] .belt-cards {
+  display: block;
+  width: 240px;
+  max-width: 100%;
+}
+.pinned-workspace[data-variant][data-open='false'] .belt-cards {
+  display: none;
+}
+.pinned-workspace[data-variant] .tool-card {
+  height: 190px;
+  border-left: 0;
+}
+.pinned-workspace[data-variant] .timer-body {
+  padding: 8px 12px 12px;
+}
+.pinned-workspace[data-variant] .timer-dial {
+  gap: 3px;
+  min-height: 35px;
+}
+.pinned-workspace[data-variant] .timer-dial output {
+  font-size: 30px;
+  font-weight: 400;
+}
+.pinned-workspace[data-variant] .timer-progress {
+  margin: 8px 0 10px;
+}
+.pinned-workspace[data-variant] .timer-presets {
+  margin-bottom: 9px;
+}
+.pinned-workspace[data-variant] .primary-control {
+  padding: 7px 12px;
+  min-width: 78px;
+}
+.pinned-workspace[data-variant] .note-body textarea {
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.pinned-workspace[data-variant] .note-body footer {
+  padding: 8px 12px;
+  font-size: 10px;
+}
+.pinned-workspace[data-variant] .calculator-body {
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+}
+.pinned-workspace[data-variant] .calculator-body > input {
+  padding: 9px;
+  font-size: 12px;
+}
+.pinned-workspace[data-variant] .calculator-keys {
+  display: flex;
+  flex: 0 0 auto;
+}
+.pinned-workspace[data-variant] .calculator-keys button {
+  display: none;
+}
+.pinned-workspace[data-variant] .calculator-keys .equals-key {
+  display: block;
+  width: 100%;
+  height: 30px;
+}
+.pinned-workspace[data-variant='rail'] {
+  display: grid;
+  grid-template-columns: 40px auto;
+}
+.pinned-workspace[data-variant='rail'][hidden] {
+  display: none;
+}
+.pinned-workspace[data-variant='rail'] .belt-bar {
+  top: auto;
+  bottom: 5px;
+  left: 5px;
+  right: auto;
+}
+.pinned-workspace[data-variant='rail'] .belt-dock {
+  flex-direction: column;
+  width: 40px;
+  height: 100%;
+  min-height: 150px;
+  padding: 5px 4px 38px;
+}
+.pinned-workspace[data-variant='rail'] .belt-tool {
+  flex: 0 0 30px;
+}
+.pinned-workspace[data-variant='rail'] .belt-cards {
+  width: 224px;
+}
+.pinned-workspace[data-variant='rail'] .tool-card {
+  border-top: 0;
+  border-left: 1px solid var(--border);
+}
+.pinned-workspace[data-variant='strip'] {
+  width: 360px;
+}
+.pinned-workspace[data-variant='strip'] .belt-dock,
+.pinned-workspace[data-variant='strip'] .belt-cards {
+  width: 100%;
+}
+.pinned-workspace[data-variant='strip'] .belt-dock {
+  height: 38px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.pinned-workspace[data-variant='strip'] .tool-card {
+  height: 56px;
+}
+.pinned-workspace[data-variant='strip'] .timer-body {
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.pinned-workspace[data-variant='strip'] .timer-dial {
+  flex: 0 0 auto;
+  min-height: 0;
+}
+.pinned-workspace[data-variant='strip'] .timer-dial output {
+  font-size: 24px;
+}
+.pinned-workspace[data-variant='strip'] .timer-dial span,
+.pinned-workspace[data-variant='strip'] .timer-progress,
+.pinned-workspace[data-variant='strip'] .timer-presets,
+.pinned-workspace[data-variant='strip'] .note-body footer {
+  display: none;
+}
+.pinned-workspace[data-variant='strip'] .timer-controls {
+  height: 32px;
+}
+.pinned-workspace[data-variant='strip'] .note-body textarea {
+  padding: 8px 12px;
+  line-height: 1.5;
+}
+.pinned-workspace[data-variant='strip'] .calculator-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 70px 32px;
+  align-items: center;
+  padding: 9px 12px;
+  gap: 8px;
+}
+.pinned-workspace[data-variant='strip'] .calculator-body > input {
+  padding: 6px;
+}
+.pinned-workspace[data-variant='strip'] .calculation-result,
+.pinned-workspace[data-variant='strip'] .calculation-error {
+  min-height: 0;
+  font-size: 18px;
+}

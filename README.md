@@ -23,10 +23,10 @@ src/
   shared/        Launcher, appearance, and image-save types
   renderer/
     launcher/    Search bar, section picker, results, and keyboard behavior
-    pinned/      Pinned workspace with notes/, timer/, and calculator/
+    pinned/      Workspace layout, controls, and presentation variants
     settings/    Appearance settings and theme preferences
     applications/  Zeus AI sample app
-    tools/       Resize Image and the tool registry
+    tools/       Notes, Timer, Calculator, Resize Image, and the tool registry
     styles/      Global base styles and theme tokens
     assets/      Tray artwork
 ```
@@ -68,6 +68,16 @@ runs the same build checks. Installer packaging, signing, and auto-updates are n
 Regression tests live in `tests/main/` and `tests/renderer/`. They cover tray asset
 paths, app launch failures, and native window recovery, including retry behavior and
 preserving pinned notes. These tests run without opening Electron or touching personal data.
+
+## Pinned design previews
+
+Run `npm run dev:browser` and open
+[the pinned gallery](http://127.0.0.1:5173/previews/pinned/) to compare three compact,
+icon-only layouts. Click tool icons to open or tuck away a tool, and use the theme
+switch to check both appearances. Preview notes use separate storage keys.
+
+These are mock directions; the active native layout remains unchanged until a
+variant is chosen. See [the design notes](docs/design/pinned.md).
 
 ## Use the launcher
 

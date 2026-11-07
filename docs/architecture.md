@@ -5,28 +5,28 @@ Each component should describe a visible part of Zeus. Hooks hold its state and 
 
 ## Where to make a change
 
-| Change                              | Start here                                       |
-| ----------------------------------- | ------------------------------------------------ |
-| Overall launcher layout             | `src/renderer/launcher/Launcher.tsx`             |
-| Search field                        | `src/renderer/launcher/SearchBar.tsx`            |
-| Search matching                     | `src/renderer/launcher/search.ts`                |
-| Section names and order             | `src/renderer/launcher/sections.ts`              |
-| Keyboard controls                   | `src/renderer/launcher/useLauncherKeyboard.ts`   |
-| Launcher UI state and actions       | `src/renderer/launcher/useLauncher.ts`           |
-| Native layout handshake             | `src/renderer/launcher/useLauncherWindow.ts`     |
-| Pinned workspace and two-card limit | `src/renderer/pinned/PinnedWorkspace.tsx`        |
-| Notes, timer, or calculator         | The matching folder under `src/renderer/pinned/` |
-| Appearance settings                 | `src/renderer/settings/`                         |
-| Colors and global styles            | `src/renderer/styles/`                           |
-| Sample chat app                     | `src/renderer/applications/mock-ai/`             |
-| Image resizer                       | `src/renderer/tools/resize-image/`               |
-| Native window transitions           | `src/main/launcher-window.ts`                    |
-| Tray menu and global shortcut       | `src/main/tray.ts`                               |
-| Native application/tool windows     | `src/main/app-windows.ts`                        |
-| Native image save dialog            | `src/main/image-save.ts`                         |
-| IPC authorization and validation    | `src/main/ipc.ts`                                |
-| Saved native appearance             | `src/main/preferences.ts`                        |
-| Regression checks                   | `tests/main/` and `tests/renderer/`              |
+| Change                              | Start here                                      |
+| ----------------------------------- | ----------------------------------------------- |
+| Overall launcher layout             | `src/renderer/launcher/Launcher.tsx`            |
+| Search field                        | `src/renderer/launcher/SearchBar.tsx`           |
+| Search matching                     | `src/renderer/launcher/search.ts`               |
+| Section names and order             | `src/renderer/launcher/sections.ts`             |
+| Keyboard controls                   | `src/renderer/launcher/useLauncherKeyboard.ts`  |
+| Launcher UI state and actions       | `src/renderer/launcher/useLauncher.ts`          |
+| Native layout handshake             | `src/renderer/launcher/useLauncherWindow.ts`    |
+| Pinned workspace and two-card limit | `src/renderer/pinned/PinnedWorkspace.tsx`       |
+| Notes, timer, or calculator         | The matching folder under `src/renderer/tools/` |
+| Appearance settings                 | `src/renderer/settings/`                        |
+| Colors and global styles            | `src/renderer/styles/`                          |
+| Sample chat app                     | `src/renderer/applications/mock-ai/`            |
+| Image resizer                       | `src/renderer/tools/resize-image/`              |
+| Native window transitions           | `src/main/launcher-window.ts`                   |
+| Tray menu and global shortcut       | `src/main/tray.ts`                              |
+| Native application/tool windows     | `src/main/app-windows.ts`                       |
+| Native image save dialog            | `src/main/image-save.ts`                        |
+| IPC authorization and validation    | `src/main/ipc.ts`                               |
+| Saved native appearance             | `src/main/preferences.ts`                       |
+| Regression checks                   | `tests/main/` and `tests/renderer/`             |
 
 ## How the pieces connect
 
@@ -43,9 +43,17 @@ fixed native pages; renderer input never supplies a file path.
 `Launcher.tsx` assembles the visible pieces. `useLauncher` owns the UI transitions;
 keyboard handling, result matching, and the native layout handshake have separate files.
 
-`PinnedWorkspace` keeps the notes, timer, and calculator hooks mounted even when a
-card is tucked away or the launcher is hidden. This preserves notes, calculations,
-and a running timer while switching views.
+All tools live under `src/renderer/tools/`. `registry.ts` holds their metadata:
+`pinned` controls availability in the pinned workspace; `launcher` controls standalone
+launcher search. An embedded tool needs a view in `tools/embedded.ts`; a standalone
+tool also needs an approved native window and a build entry. These flags describe
+available surfaces; they do not grant native permissions.
+
+Each embedded tool owns its state and styles in its own folder. `PinnedWorkspace`
+reads the registry and assembles the eligible views. It keeps those views mounted
+inside hidden panels when tucked away or when the workspace is hidden, preserving
+notes, calculations, and a running timer. `pinned/` owns the container and its layout,
+not individual tool implementations. Preview instances supply a separate note storage scope.
 
 ## Styling and builds
 
@@ -61,7 +69,7 @@ stale responses, app launch errors, retries, and keeping pinned notes mounted.
 `electron.vite.config.ts` builds Electron and the three CommonJS preloads.
 `vite.renderer.config.ts` supplies the same renderer configuration to Electron and
 the standalone browser preview. It builds the launcher, Zeus AI, and Resize Image
-as separate HTML entry points and copies `renderer/assets/` into the renderer output.
+and the pinned preview gallery as separate HTML entry points and copies `renderer/assets/` into the renderer output.
 Generated files belong in `out/` and are ignored by Git.
 
 ## Compatibility

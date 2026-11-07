@@ -1,0 +1,86 @@
+.timer-body {
+  flex: 1;
+  min-height: 0;
+  padding: 5px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-dial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 1;
+  min-height: 64px;
+}
+.timer-dial output {
+  font-size: 34px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  font-variant-numeric: tabular-nums;
+}
+.timer-dial span {
+  font-size: 10px;
+  color: var(--subtle);
+}
+.timer-progress {
+  width: 100%;
+  max-width: 170px;
+  height: 2px;
+  background: var(--border-strong);
+  margin: 12px 0 18px;
+  overflow: hidden;
+  border-radius: 1px;
+}
+.timer-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 250ms linear;
+}
+.timer-presets {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.timer-presets button {
+  padding: 5px 8px;
+  font-size: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  color: var(--muted);
+}
+.timer-presets button[aria-pressed='true'] {
+  color: var(--text);
+  background: var(--hover);
+  border-color: var(--border-strong);
+}
+.timer-presets button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.timer-controls {
+  display: flex;
+  gap: 8px;
+}
+.primary-control {
+  min-width: 96px;
+  padding: 8px 15px;
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: 11px;
+  font-weight: 500;
+}
+.reset-timer {
+  width: 31px;
+  background: var(--hover);
+  border: 1px solid var(--border-strong);
+  border-radius: 7px;
+  font-size: 18px;
+  color: var(--muted);
+}
